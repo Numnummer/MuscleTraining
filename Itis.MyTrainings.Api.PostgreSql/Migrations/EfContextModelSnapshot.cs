@@ -44,19 +44,19 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dfee8cc1-a4fa-4a5e-9ab6-723fcf49c9c2"),
+                            Id = new Guid("3a96e520-caf4-464d-85e8-304863711e7b"),
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = new Guid("b2790f59-7141-4979-bc42-5474008bb17d"),
+                            Id = new Guid("d64e70fa-8ace-4eba-8753-2c2f383c61b3"),
                             Name = "Coach",
                             NormalizedName = "COACH"
                         },
                         new
                         {
-                            Id = new Guid("aaed8239-88b2-41df-a174-3aabc82c6c58"),
+                            Id = new Guid("eedd2ec5-1b1d-4ba7-9001-16db15898319"),
                             Name = "User",
                             NormalizedName = "USER"
                         });

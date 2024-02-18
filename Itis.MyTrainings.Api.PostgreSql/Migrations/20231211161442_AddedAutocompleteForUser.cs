@@ -1,4 +1,5 @@
 ﻿using System;
+using Itis.MyTrainings.Api.PostgreSql.Constants;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -206,9 +207,9 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("3a96e520-caf4-464d-85e8-304863711e7b"), null, "Administrator", null },
-                    { new Guid("d64e70fa-8ace-4eba-8753-2c2f383c61b3"), null, "Coach", null },
-                    { new Guid("eedd2ec5-1b1d-4ba7-9001-16db15898319"), null, "User", null }
+                    { RoleIds.Administrator, null, "Administrator", null },
+                    { RoleIds.Coach, null, "Coach", null },
+                    { RoleIds.User, null, "User", null }
                 });
         }
 

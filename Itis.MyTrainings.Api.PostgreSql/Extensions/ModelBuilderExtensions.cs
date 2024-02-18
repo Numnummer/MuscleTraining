@@ -13,10 +13,6 @@ public static class ModelBuilderExtensions
     /// <param name="modelBuilder">ModelBuilder</param>
     public static void Seed(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Role>().HasData(
-            RoleManager.GetRoles()
-        );
-
         modelBuilder.Entity<IdentityUserRole<Guid>>(userRole =>
         {
             userRole.HasKey(pr => new
