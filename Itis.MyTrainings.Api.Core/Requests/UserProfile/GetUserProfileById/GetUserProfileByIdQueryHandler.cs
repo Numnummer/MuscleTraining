@@ -1,4 +1,5 @@
-﻿using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
+﻿using System.ComponentModel.DataAnnotations;
+using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Exceptions;
 using MediatR;
@@ -13,14 +14,19 @@ public class GetUserProfileByIdQueryHandler
 : IRequestHandler<GetUserProfileByIdQuery, GetUserProfileByIdResponse>
 {
     private readonly IDbContext _dbContext;
+    private readonly IUserService _userService;
 
     /// <summary>
     /// Конструктор
     /// </summary>
-    /// <param name="dbContext"></param>
-    public GetUserProfileByIdQueryHandler(IDbContext dbContext)
+    /// <param name="dbContext">Контекст EF Core для приложения</param>
+    /// <param name="userService">Сервис для работы с пользователем</param>
+    public GetUserProfileByIdQueryHandler(
+        IDbContext dbContext,
+        IUserService userService)
     {
         _dbContext = dbContext;
+        _userService = userService;
     }
     
     /// <inheritdoc />
@@ -28,22 +34,17 @@ public class GetUserProfileByIdQueryHandler
         GetUserProfileByIdQuery request, 
         CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.UserProfiles
-            .FirstOrDefaultAsync(x => x.Id == request.Id, 
-                cancellationToken)
+        var entity = await _userService.FindUserProfileByUserId(request.Id, cancellationToken)
             ?? throw new EntityNotFoundException<Entities.UserProfile>(request.Id);
         
-        var response = new GetUserProfileByIdResponse()
+        var response = new GetUserProfileByIdResponse
         {
             Gender = entity.Gender,
             Height = entity.Height,
-            DietaryPreferences = entity.DietaryPreferences,
             Weight = entity.Weight,
             PhoneNumber = entity.PhoneNumber,
-            StartDate = entity.StartDate,
-            MedicalSickness = entity.MedicalSickness,
-            WeeklyTrainingFrequency = entity.WeeklyTrainingFrequency,
-            DateOfBirth = entity.DateOfBirth
+            DateOfBirth = entity.DateOfBirth,
+            CreateDate = entity.CreateDate
         };
 
         return response;

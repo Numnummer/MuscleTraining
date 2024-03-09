@@ -10,8 +10,6 @@ namespace Itis.MyTrainings.Api.Core.Entities;
 /// </summary>
 public class User: IdentityUser<Guid>, IEntity
 {
-    private UserProfile? _profile;
-    
     /// <summary>
     /// Имя пользователя
     /// </summary>
@@ -23,22 +21,4 @@ public class User: IdentityUser<Guid>, IEntity
     /// </summary>
     [Required]
     public string LastName { get; set; } = default!;
-
-    /// <summary>
-    /// Идентификатор профиля пользователя
-    /// </summary>
-    public Guid? ProfileId { get; private set; }
-
-    /// <summary>
-    /// Профиль пользователя
-    /// </summary>
-    public UserProfile? Profile 
-    { 
-        get => _profile;
-        set 
-        {
-            _profile = value;
-            ProfileId = _profile?.Id;
-        }
-    }
 }

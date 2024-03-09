@@ -51,24 +51,4 @@ public class GetCurrentUserInfoResponse
     /// Вес
     /// </summary>
     public int? Weight { get; set; }
-
-    /// <summary>
-    /// Дата начала тренировок
-    /// </summary>
-    public DateTime? StartDate { get; set; }
-    
-    /// <summary>
-    /// Количество тренировок в неделю
-    /// </summary>
-    public int? WeeklyTrainingFrequency { get; set; }
-    
-    /// <summary>
-    /// Заболевания
-    /// </summary>
-    public string? MedicalSickness { get; set; }
-    
-    /// <summary>
-    /// Предпочтения по питанию
-    /// </summary>
-    public string? DietaryPreferences { get; set; }
 }

@@ -19,6 +19,7 @@ public class EfContext: IdentityDbContext<User, Role, Guid>, IDbContext
     public EfContext(DbContextOptions<EfContext> options)
         : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     /// <summary>

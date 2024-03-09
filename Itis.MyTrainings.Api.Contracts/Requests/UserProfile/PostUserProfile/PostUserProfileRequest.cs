@@ -1,9 +1,9 @@
-﻿namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
+﻿namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
 
 /// <summary>
-/// Ответ на зпрос на получение профиля пользователя
+/// Запрос на создания профиля пользователя
 /// </summary>
-public class GetUserProfileByIdResponse
+public class PostUserProfileRequest
 {
     /// <summary>
     /// Пол
@@ -21,7 +21,7 @@ public class GetUserProfileByIdResponse
     public string? PhoneNumber { get; set; }
 
     /// <summary>
-    /// Рос
+    /// Рост
     /// </summary>
     public int? Height { get; set; }
     
@@ -29,9 +29,4 @@ public class GetUserProfileByIdResponse
     /// Вес
     /// </summary>
     public int? Weight { get; set; }
-    
-    /// <summary>
-    /// Дата создания профиля
-    /// </summary>
-    public DateTime CreateDate { get; set; }
 }

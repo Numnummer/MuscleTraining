@@ -3,6 +3,7 @@ using System;
 using Itis.MyTrainings.Api.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Itis.MyTrainings.Api.PostgreSql.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class EfContextModelSnapshot : ModelSnapshot
+    [Migration("20240309160937_UpdateduserProfile3")]
+    partial class UpdateduserProfile3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,6 +92,9 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("ProfileId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -100,6 +106,8 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProfileId");
+
                     b.ToTable("Users");
                 });
 
@@ -110,10 +118,10 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Gender")
                         .HasColumnType("text");
@@ -124,15 +132,10 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.Property<int?>("Weight")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserProfiles");
                 });
@@ -232,15 +235,13 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.UserProfile", b =>
+            modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.User", b =>
                 {
-                    b.HasOne("Itis.MyTrainings.Api.Core.Entities.User", "User")
+                    b.HasOne("Itis.MyTrainings.Api.Core.Entities.UserProfile", "Profile")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfileId");
 
-                    b.Navigation("User");
+                    b.Navigation("Profile");
                 });
 #pragma warning restore 612, 618
         }

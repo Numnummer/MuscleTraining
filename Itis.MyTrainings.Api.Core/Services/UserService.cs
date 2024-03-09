@@ -83,13 +83,13 @@ public class UserService: IUserService
     }
 
     /// <inheritdoc />
-    public async Task<UserProfile?> FindUserProfileById(Guid? userProfileId, CancellationToken cancellationToken)
+    public async Task<UserProfile?> FindUserProfileByUserId(Guid? userId, CancellationToken cancellationToken)
     {
-        if (userProfileId == null)
-            throw new ArgumentNullException(nameof(userProfileId));
+        if (userId == null)
+            throw new ArgumentNullException(nameof(userId));
             
         var result = await _dbContext.UserProfiles
-            .FirstOrDefaultAsync(x => x.Id == userProfileId, cancellationToken);
+            .FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
 
         return result;
     }

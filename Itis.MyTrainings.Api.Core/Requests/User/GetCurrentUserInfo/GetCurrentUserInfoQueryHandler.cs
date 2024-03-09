@@ -33,9 +33,7 @@ public class GetCurrentUserInfoQueryHandler:
         var user = await _userService.FindUserByIdAsync(request.UserId.Value)
             ?? throw new EntityNotFoundException<Entities.User>("Пользователи не найдены");
 
-        var userProfile = user.ProfileId != null
-            ? await _userService.FindUserProfileById(user.ProfileId, cancellationToken)
-            : null;
+        var userProfile = await _userService.FindUserProfileByUserId(user.Id, cancellationToken);
 
         return new GetCurrentUserInfoResponse
         {
@@ -48,10 +46,6 @@ public class GetCurrentUserInfoQueryHandler:
             PhoneNumber = userProfile?.PhoneNumber,
             Height = userProfile?.Height,
             Weight = userProfile?.Weight,
-            StartDate = userProfile?.StartDate,
-            WeeklyTrainingFrequency = userProfile?.WeeklyTrainingFrequency,
-            MedicalSickness = userProfile?.MedicalSickness,
-            DietaryPreferences = userProfile?.DietaryPreferences,
         };
     }
 }

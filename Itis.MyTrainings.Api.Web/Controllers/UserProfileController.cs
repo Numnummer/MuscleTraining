@@ -1,7 +1,10 @@
 ﻿using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
+using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
 using Itis.MyTrainings.Api.Core.Requests.UserProfile.GetUserProfileById;
+using Itis.MyTrainings.Api.Core.Requests.UserProfile.PostUserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql.Internal.TypeHandlers.FullTextSearchHandlers;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
 
@@ -11,39 +14,42 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 public class UserProfileController
 {
     /// <summary>
-    /// Получить профиль пользователя по идентификатор
+    /// Получить профиль пользователя по идентификатору
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [HttpGet("GetProfileById/{userId}")]
+    [HttpGet("profileByUserId")]
     public async Task<GetUserProfileByIdResponse> GetProfileById(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
-        CancellationToken cancellationToken) =>
-        await mediator.Send(
+        [FromQuery] Guid userId,
+        CancellationToken cancellationToken) 
+        => await mediator.Send(
             new GetUserProfileByIdQuery(userId), 
             cancellationToken);
 
-    #region 
-
     /// <summary>
-    /// Пасхалочка
+    /// Создать профиль пользователя
     /// </summary>
+    /// <param name="mediator">Медиатор CQRS</param>
+    /// <param name="userId">Идентификатор пользователя</param>
+    /// <param name="request">Запрос</param>
+    /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [HttpGet("chipi")]
-    public IActionResult Chipi()
-    {
-        return new ContentResult()
-        {
-            Content = $"<!DOCTYPE html>\n<html>\n<head>\n   " +
-                      $"</head>\n<body>\n    <img style=\"width: 100%\" " +
-                      $"src=\"https://media1.tenor.com/m/s7Tf_aL-Di0AAAAC/chipi-chipi-chapa-chapa.gif\" alt=\"Гифка\">\n</body>\n</html>",
-            ContentType = "text/html",
-            StatusCode = 200,
-        };
-    }
-
-    #endregion
+    [HttpPost("profile")]
+    public async Task<PostUserProfileResponse> PostUserProfile(
+        [FromServices] IMediator mediator,
+        [FromQuery] Guid userId,
+        [FromBody] PostUserProfileRequest request,
+        CancellationToken cancellationToken)
+        => await mediator.Send(
+            new PostUserProfileCommand(userId)
+            {
+                Gender = request.Gender,
+                DateOfBirth = request.DateOfBirth,
+                PhoneNumber = request.PhoneNumber,
+                Height = request.Height,
+                Weight = request.Weight,
+            }, cancellationToken);
 }

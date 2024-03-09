@@ -95,8 +95,8 @@ public interface IUserService
     /// <summary>
     /// Получить профиль пользователя по id
     /// </summary>
-    /// <param name="userProfileId">Идентификатор профиля пользователя</param>
+    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">CancellationToken</param>
     /// <returns></returns>
-    public Task<UserProfile?> FindUserProfileById(Guid? userProfileId, CancellationToken cancellationToken);
+    public Task<UserProfile?> FindUserProfileByUserId(Guid? userId, CancellationToken cancellationToken);
 }
