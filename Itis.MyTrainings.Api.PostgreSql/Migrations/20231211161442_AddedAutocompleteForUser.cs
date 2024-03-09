@@ -1,4 +1,5 @@
 ﻿using System;
+using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.PostgreSql.Constants;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -207,9 +208,9 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { RoleIds.Administrator, null, "Administrator", null },
-                    { RoleIds.Coach, null, "Coach", null },
-                    { RoleIds.User, null, "User", null }
+                    { RoleIds.Administrator, null, Roles.Administrator, null },
+                    { RoleIds.Coach, null, Roles.Coach, null },
+                    { RoleIds.User, null, Roles.User, null }
                 });
         }
 
