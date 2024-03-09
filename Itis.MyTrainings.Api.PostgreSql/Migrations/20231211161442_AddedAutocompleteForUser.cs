@@ -208,9 +208,9 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { RoleIds.Administrator, null, Roles.Administrator, null },
-                    { RoleIds.Coach, null, Roles.Coach, null },
-                    { RoleIds.User, null, Roles.User, null }
+                    { RoleIds.Administrator, null, Roles.Administrator, Roles.Administrator.ToUpper() },
+                    { RoleIds.Coach, null, Roles.Coach, Roles.Coach.ToUpper() },
+                    { RoleIds.User, null, Roles.User, Roles.User.ToUpper() }
                 });
         }
 
