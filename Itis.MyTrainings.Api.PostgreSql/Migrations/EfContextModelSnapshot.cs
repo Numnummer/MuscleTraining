@@ -26,27 +26,34 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_in(md5(random()::text || clock_timestamp()::text)::cstring)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Наименование роли");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Нормализованное имя");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles", "public", t =>
+                        {
+                            t.HasComment("Роли");
+                        });
                 });
 
             modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_in(md5(random()::text || clock_timestamp()::text)::cstring)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -55,18 +62,21 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Почта");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Имя");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Фамилия");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -96,45 +106,62 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Никнейм пользователя");
+
+                    b.Property<Guid?>("UserProfileId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("users", "public", t =>
+                        {
+                            t.HasComment("Профили пользователей");
+                        });
                 });
 
             modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.UserProfile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_in(md5(random()::text || clock_timestamp()::text)::cstring)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasComment("Дата рождения");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
+                    b.Property<int?>("Gender")
+                        .HasColumnType("integer")
+                        .HasComment("Гендер");
 
                     b.Property<int?>("Height")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasComment("Рост");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("Номер телефона");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.Property<int?>("Weight")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasComment("Вес");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("UserProfiles");
+                    b.ToTable("user_profiles", "public", t =>
+                        {
+                            t.HasComment("Профили пользователей");
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -235,12 +262,17 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
             modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.UserProfile", b =>
                 {
                     b.HasOne("Itis.MyTrainings.Api.Core.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("UserProfile")
+                        .HasForeignKey("Itis.MyTrainings.Api.Core.Entities.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.User", b =>
+                {
+                    b.Navigation("UserProfile");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using Itis.MyTrainings.Api.Core.Exceptions;
+﻿using Itis.MyTrainings.Api.Contracts.Enums;
+using Itis.MyTrainings.Api.Core.Exceptions;
 
 namespace Itis.MyTrainings.Api.Core.Entities;
 
@@ -19,7 +20,7 @@ public class UserProfile : EntityBase
     /// <summary>
     /// Пол
     /// </summary>
-    public string? Gender { get; set; }
+    public Genders? Gender { get; set; }
     
     /// <summary>
     /// Дата рождения

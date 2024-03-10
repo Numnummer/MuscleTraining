@@ -33,15 +33,12 @@ public class PostUserProfileCommandHandler: IRequestHandler<PostUserProfileComma
         PostUserProfileCommand request, 
         CancellationToken cancellationToken)
     {
-        var hasUserProfile = await _dbContext
-            .UserProfiles.AnyAsync(x => x.UserId == request.UserId, cancellationToken);
-
-        if (hasUserProfile)
-            throw new ValidationException("Профиль пользователя уже создан");
-        
         var user = await _userService.FindUserByIdAsync(request.UserId)
             ?? throw new EntityNotFoundException<Entities.User>(request.UserId);
 
+        if (user.UserProfileId.HasValue)
+            throw new ValidationException("Профиль пользователя уже создан");
+        
         var userProfile = new Entities.UserProfile
         {
             UserId = user.Id,
@@ -54,7 +51,12 @@ public class PostUserProfileCommandHandler: IRequestHandler<PostUserProfileComma
         };
 
         _dbContext.UserProfiles.Add(userProfile);
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
+        
+        user.UserProfileId = userProfile.Id;
+        
+        await _userService.UpdateUserAsync(user);
         
         return new PostUserProfileResponse(userProfile.Id);
     }

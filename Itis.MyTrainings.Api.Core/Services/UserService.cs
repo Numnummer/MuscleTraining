@@ -90,7 +90,16 @@ public class UserService: IUserService
             
         var result = await _dbContext.UserProfiles
             .FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
-
+        
         return result;
+    }
+
+    /// <inheritdoc />
+    public async Task<IdentityResult> UpdateUserAsync(User user)
+    {
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return await _userManager.UpdateAsync(user);
     }
 }

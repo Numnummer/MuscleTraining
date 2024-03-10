@@ -143,9 +143,6 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.Property<string>("DietaryPreferences")
                         .HasColumnType("text");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
-
                     b.Property<int?>("Height")
                         .HasColumnType("integer");
 

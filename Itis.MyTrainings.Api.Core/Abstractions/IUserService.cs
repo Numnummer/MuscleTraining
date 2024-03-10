@@ -99,4 +99,11 @@ public interface IUserService
     /// <param name="cancellationToken">CancellationToken</param>
     /// <returns></returns>
     public Task<UserProfile?> FindUserProfileByUserId(Guid? userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Обновить пользователя
+    /// </summary>
+    /// <param name="user">Пользователь</param>
+    /// <returns></returns>
+    public Task<IdentityResult> UpdateUserAsync(User user);
 }

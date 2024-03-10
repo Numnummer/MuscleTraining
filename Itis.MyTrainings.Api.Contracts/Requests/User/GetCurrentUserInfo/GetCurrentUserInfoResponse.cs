@@ -1,4 +1,5 @@
-﻿using Itis.MyTrainings.Api.Contracts.Requests.User.GetResetPasswordCode;
+﻿using Itis.MyTrainings.Api.Contracts.Enums;
+using Itis.MyTrainings.Api.Contracts.Requests.User.GetResetPasswordCode;
 
 namespace Itis.MyTrainings.Api.Contracts.Requests.User.GetCurrentUserInfo;
 
@@ -30,7 +31,7 @@ public class GetCurrentUserInfoResponse
     /// <summary>
     /// Пол
     /// </summary>
-    public string? Gender { get; set; }
+    public Genders? Gender { get; set; }
     
     /// <summary>
     /// Дата рождения

@@ -1,4 +1,7 @@
-﻿namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
+﻿using System.ComponentModel.DataAnnotations;
+using Itis.MyTrainings.Api.Contracts.Enums;
+
+namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
 
 /// <summary>
 /// Запрос на создания профиля пользователя
@@ -8,7 +11,7 @@ public class PostUserProfileRequest
     /// <summary>
     /// Пол
     /// </summary>
-    public string? Gender { get; set; }
+    public Genders? Gender { get; set; }
     
     /// <summary>
     /// Дата рождения
@@ -18,6 +21,7 @@ public class PostUserProfileRequest
     /// <summary>
     /// Номер телефона
     /// </summary>
+    [DataType(DataType.PhoneNumber)]
     public string? PhoneNumber { get; set; }
 
     /// <summary>

@@ -141,9 +141,6 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
-
                     b.Property<List<string>>("Goals")
                         .HasColumnType("text[]");
 

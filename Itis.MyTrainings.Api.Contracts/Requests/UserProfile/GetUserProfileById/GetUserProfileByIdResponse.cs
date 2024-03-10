@@ -1,4 +1,6 @@
-﻿namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
+﻿using Itis.MyTrainings.Api.Contracts.Enums;
+
+namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
 
 /// <summary>
 /// Ответ на зпрос на получение профиля пользователя
@@ -8,7 +10,7 @@ public class GetUserProfileByIdResponse
     /// <summary>
     /// Пол
     /// </summary>
-    public string? Gender { get; set; }
+    public Genders? Gender { get; set; }
     
     /// <summary>
     /// Дата рождения

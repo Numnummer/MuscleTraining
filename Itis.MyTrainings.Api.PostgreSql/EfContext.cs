@@ -29,6 +29,7 @@ public class EfContext: IdentityDbContext<User, Role, Guid>, IDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfContext).Assembly);
     }
     
     /// <inheritdoc />

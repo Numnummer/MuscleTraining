@@ -1,4 +1,5 @@
-﻿using Itis.MyTrainings.Api.Core.Entities;
+﻿using Itis.MyTrainings.Api.Contracts.Enums;
+using Itis.MyTrainings.Api.Core.Entities;
 using Xunit;
 
 namespace Itis.MyTrainings.Api.UnitTests.Requests.User;
@@ -14,7 +15,7 @@ public class Test : UnitTestBase
     {
         _userProfile = new UserProfile()
         {
-            Gender = "Машина Антон"
+            Gender = Genders.Man
         };
     }
     

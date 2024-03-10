@@ -123,9 +123,6 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
-
                     b.Property<int?>("Height")
                         .HasColumnType("integer");
 
