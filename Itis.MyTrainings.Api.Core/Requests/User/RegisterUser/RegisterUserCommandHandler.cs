@@ -54,7 +54,15 @@ public class RegisterUserCommandHandler
         var result = await _userService.RegisterUserAsync(user, request.Password);
 
         if (result.Succeeded)
+        {
+            var claims = new List<Claim>
+            {
+                new (ClaimTypes.Role, request.Role)
+            };
+
             await _userService.AddUserRoleAsync(user, request.Role);
+            await _userService.AddClaimsAsync(user, claims);
+        }
         
         return new RegisterUserResponse(result);
     }

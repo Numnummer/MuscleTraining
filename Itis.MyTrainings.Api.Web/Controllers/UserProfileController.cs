@@ -11,6 +11,8 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 /// <summary>
 /// Контроллер для профиля пользователя
 /// </summary>
+[ApiController]
+[Route("api/[controller]")]
 public class UserProfileController
 {
     /// <summary>
