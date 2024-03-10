@@ -4,7 +4,6 @@ using Itis.MyTrainings.Api.Core.Requests.UserProfile.GetUserProfileById;
 using Itis.MyTrainings.Api.Core.Requests.UserProfile.PostUserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql.Internal.TypeHandlers.FullTextSearchHandlers;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
 
