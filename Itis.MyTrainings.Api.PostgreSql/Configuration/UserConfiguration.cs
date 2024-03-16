@@ -42,5 +42,15 @@ internal class UserConfiguration: IEntityTypeConfiguration<User>
             .HasForeignKey<UserProfile>(x => x.UserId)
             .HasPrincipalKey<User>(x => x.Id)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(x => x.Exercises)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId)
+            .HasPrincipalKey(x => x.Id);
+
+        builder.HasMany(x => x.Trainings)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId)
+            .HasPrincipalKey(x => x.Id);
     }
 }

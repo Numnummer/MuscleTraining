@@ -44,7 +44,7 @@ public class GetCurrentUserInfoResponse
     public string? PhoneNumber { get; set; }
 
     /// <summary>
-    /// Рос
+    /// Рост
     /// </summary>
     public int? Height { get; set; }
     

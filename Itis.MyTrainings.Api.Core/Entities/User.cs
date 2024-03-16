@@ -37,4 +37,14 @@ public class User: IdentityUser<Guid>, IEntity
             UserProfileId = value?.Id;
         }
     }
+
+    /// <summary>
+    /// Упражнения
+    /// </summary>
+    public List<Exercise>? Exercises { get; set; }
+
+    /// <summary>
+    /// Тренировки
+    /// </summary>
+    public List<Training>? Trainings { get; set; }
 }

@@ -3,7 +3,6 @@ using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Itis.MyTrainings.Api.Core.Requests.UserProfile.PostUserProfile;
 

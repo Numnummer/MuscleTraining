@@ -12,6 +12,16 @@ public interface IDbContext
     /// Профиль пользователя
     /// </summary>
     DbSet<UserProfile> UserProfiles { get; set; }
+
+    /// <summary>
+    /// Упражнения
+    /// </summary>
+    DbSet<Exercise> Exercises { get; set; }
+
+    /// <summary>
+    /// Тренировки
+    /// </summary>
+    DbSet<Training> Trainings { get; set; }
     
     /// <summary>
     /// Сохранить изменения в БД
