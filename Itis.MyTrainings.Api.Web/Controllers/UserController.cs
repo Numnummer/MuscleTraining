@@ -23,9 +23,7 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 /// <summary>
 /// Контроллер сущности "Пользователь"
 /// </summary>
-[ApiController]
-[Route("api/[controller]")]
-public class UserController: Controller
+public class UserController: BaseController
 {
     private readonly IVkService _vkService;
     private readonly IYandexService _yandexService;
