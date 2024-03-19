@@ -12,11 +12,11 @@ public static class AuthorizationConfigurator
     /// <param name="opt">AuthorizationOptions</param>
     public static void AddRoles(this AuthorizationOptions opt)
     {
-        opt.AddPolicy(Roles.Administrator, policyBuilder =>
+        opt.AddPolicy(PolicyConstants.IsAdministrator, policyBuilder =>
         {
             policyBuilder.RequireClaim(ClaimTypes.Role, Roles.Administrator);
         });
-        opt.AddPolicy(Roles.Coach, policyBuilder =>
+        opt.AddPolicy(PolicyConstants.IsCoach, policyBuilder =>
         {
             policyBuilder
                 .RequireAssertion(
@@ -24,7 +24,7 @@ public static class AuthorizationConfigurator
                         x.User.HasClaim(ClaimTypes.Role, Roles.Coach) || 
                         x.User.HasClaim(ClaimTypes.Role, Roles.Administrator));
         });
-        opt.AddPolicy(Roles.User, policyBuilder =>
+        opt.AddPolicy(PolicyConstants.IsDefaultUser, policyBuilder =>
         {
             policyBuilder
                 .RequireAssertion(

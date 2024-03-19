@@ -1,8 +1,10 @@
 ﻿using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
 using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
+using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.UserProfile.GetUserProfileById;
 using Itis.MyTrainings.Api.Core.Requests.UserProfile.PostUserProfile;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
@@ -19,6 +21,7 @@ public class UserProfileController : BaseController
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
+    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
     [HttpGet("{userId}")]
     public async Task<GetUserProfileByIdResponse> GetProfileById(
         [FromServices] IMediator mediator,
@@ -36,6 +39,7 @@ public class UserProfileController : BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
+    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
     [HttpPost("{userId}")]
     public async Task<PostUserProfileResponse> PostUserProfile(
         [FromServices] IMediator mediator,

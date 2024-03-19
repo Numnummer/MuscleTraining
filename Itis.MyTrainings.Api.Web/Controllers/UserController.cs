@@ -7,6 +7,7 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithYandex;
 using Itis.MyTrainings.Api.Contracts.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Contracts.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Core.Abstractions;
+using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Core.Requests.User.GetResetPasswordCode;
 using Itis.MyTrainings.Api.Core.Requests.User.RegisterUser;
@@ -162,7 +163,7 @@ public class UserController: BaseController
     /// </summary>
     /// <param name="mediator"></param>
     /// <returns></returns>
-    [Authorize]
+    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
     [HttpGet("currentUserInfo")]
     public async Task<ActionResult> GetCurrentUserInfo(
         [FromServices] IMediator mediator)
