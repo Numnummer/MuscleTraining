@@ -19,10 +19,10 @@ public class UserProfileController : BaseController
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [HttpGet("profileByUserId")]
+    [HttpGet("{userId}")]
     public async Task<GetUserProfileByIdResponse> GetProfileById(
         [FromServices] IMediator mediator,
-        [FromQuery] Guid userId,
+        [FromRoute] Guid userId,
         CancellationToken cancellationToken) 
         => await mediator.Send(
             new GetUserProfileByIdQuery(userId), 
@@ -36,10 +36,10 @@ public class UserProfileController : BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [HttpPost("profile")]
+    [HttpPost("{userId}")]
     public async Task<PostUserProfileResponse> PostUserProfile(
         [FromServices] IMediator mediator,
-        [FromQuery] Guid userId,
+        [FromRoute] Guid userId,
         [FromBody] PostUserProfileRequest request,
         CancellationToken cancellationToken)
         => await mediator.Send(

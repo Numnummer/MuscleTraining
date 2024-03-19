@@ -21,4 +21,8 @@ public class RoleService: IRoleService
     /// <inheritdoc />
     public async Task<bool> IsRoleExistAsync(string roleName)
         => await _roleManager.RoleExistsAsync(roleName);
+
+    /// <inheritdoc />
+    public async Task<Role?> GetRoleById(Guid roleId)
+        => await _roleManager.FindByIdAsync(roleId.ToString());
 }

@@ -1,5 +1,4 @@
-﻿
-using Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainings;
+﻿using Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainings;
 using Itis.MyTrainings.Api.Contracts.Requests.Training.PostTraining;
 using Itis.MyTrainings.Api.Core.Requests.Training.GetTrainings;
 using Itis.MyTrainings.Api.Core.Requests.Training.PostTraining;
@@ -21,10 +20,10 @@ public class TrainingController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns>Идентификатор тренировки</returns>
-    [HttpPost]
+    [HttpPost("{userId}")]
     public async Task<PostTrainingResponse> PostTrainingAsync(
         [FromServices] IMediator mediator,
-        [FromQuery] Guid userId,
+        [FromRoute] Guid userId,
         [FromBody] PostTrainingRequest request,
         CancellationToken cancellationToken)
         => await mediator.Send(new PostTrainingCommand(userId)
@@ -37,14 +36,16 @@ public class TrainingController: BaseController
     /// <summary>
     /// Получить все тренировки
     /// </summary>
+    /// <param name="mediator">Медиатор CQRS</param>
+    /// <param name="userId">Идентификатор пользователя</param>
+    /// <param name="request">Запрос</param>
+    /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("{userId}")]
     public async Task<GetTrainingsResponse> GetTrainingsAsync(
         [FromServices] IMediator mediator,
-        [FromQuery] Guid userId,
+        [FromRoute] Guid userId,
         [FromQuery] GetTrainingsRequest request,
         CancellationToken cancellationToken)
-        => await mediator.Send(new GetTrainingsQuery(userId)
-        {
-        }, cancellationToken);
+        => await mediator.Send(new GetTrainingsQuery(userId), cancellationToken);
 }

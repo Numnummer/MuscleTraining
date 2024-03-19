@@ -163,20 +163,19 @@ public class UserController: BaseController
     /// <param name="mediator"></param>
     /// <returns></returns>
     [Authorize]
-    [HttpGet("getCurrentUserInfo")]
+    [HttpGet("currentUserInfo")]
     public async Task<ActionResult> GetCurrentUserInfo(
         [FromServices] IMediator mediator)
     {
-        var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
-        if (currentUserId == null)
-            return BadRequest("Идентификатор пользователя не найден");
+        var currentUserId = GetCurrentUserInfo();
         
-        var currentUserGuid = Guid.Parse(currentUserId.Value);
-
+        if (!currentUserId.HasValue)
+            return BadRequest("Текущий пользователь не найден");
+        
         GetCurrentUserInfoResponse result;
         try
         {
-            result = await mediator.Send(new GetCurrentUserInfoQuery(currentUserGuid));
+            result = await mediator.Send(new GetCurrentUserInfoQuery(currentUserId));
         }
         catch (Exception e)
         {

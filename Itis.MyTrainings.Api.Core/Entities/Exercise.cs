@@ -12,10 +12,13 @@ public class Exercise : EntityBase
     /// <summary>
     /// Конструктор
     /// </summary>
+    /// <param name="userId">Пользователь</param>
     /// <param name="name">Название</param>
     public Exercise(
+        Guid userId,
         string name)
     {
+        UserId = userId;
         Name = name;
         Trainings = new List<Training>();
     }
