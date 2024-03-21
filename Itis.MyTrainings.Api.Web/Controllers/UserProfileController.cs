@@ -1,8 +1,10 @@
 ﻿using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.GetUserProfileById;
 using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
+using Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PutUserProfile;
 using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.UserProfile.GetUserProfileById;
 using Itis.MyTrainings.Api.Core.Requests.UserProfile.PostUserProfile;
+using Itis.MyTrainings.Api.Core.Requests.UserProfile.PutUserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,4 +57,28 @@ public class UserProfileController : BaseController
                 Height = request.Height,
                 Weight = request.Weight,
             }, cancellationToken);
+
+    /// <summary>
+    /// Обновить профиль пользователя
+    /// </summary>
+    /// <param name="mediator">Медиатор CQRS</param>
+    /// <param name="userId">Идентификатор пользователя</param>
+    /// <param name="request">Запрос</param>
+    /// <param name="cancellationToken">Токен отмены запроса</param>
+    /// <returns>Идентификатор обновленной сущности</returns>
+    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [HttpPut("{userId}")]
+    public async Task<PutUserProfileResponse> PutUserProfile(
+        [FromServices] IMediator mediator,
+        [FromRoute] Guid userId,
+        [FromBody] PutUserProfileRequest request,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new PutUserProfileCommand(userId)
+        {
+            Gender = request.Gender,
+            DateOfBirth = request.DateOfBirth,
+            PhoneNumber = request.PhoneNumber,
+            Height = request.Height,
+            Weight = request.Weight,
+        }, cancellationToken);
 }

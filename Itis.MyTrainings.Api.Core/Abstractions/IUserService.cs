@@ -98,7 +98,7 @@ public interface IUserService
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">CancellationToken</param>
     /// <returns></returns>
-    public Task<UserProfile?> FindUserProfileByUserId(Guid? userId, CancellationToken cancellationToken);
+    public Task<UserProfile?> FindUserProfileByUserId(Guid? userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Обновить пользователя
