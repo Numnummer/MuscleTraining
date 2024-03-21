@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Itis.MyTrainings.Api.Contracts.Requests.User.GetCurrentUserInfo;
+﻿using Itis.MyTrainings.Api.Contracts.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Contracts.Requests.User.GetResetPasswordCode;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUser;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithVk;
@@ -8,6 +7,7 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Contracts.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Requests.User.CheckUserProfile;
 using Itis.MyTrainings.Api.Core.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Core.Requests.User.GetResetPasswordCode;
 using Itis.MyTrainings.Api.Core.Requests.User.RegisterUser;
@@ -224,4 +224,19 @@ public class UserController: BaseController
         [FromServices] IMediator mediator,
         [FromQuery] string code) => 
         await mediator.Send(new RegisterUserWithYandexCommand(code));
+
+    /// <summary>
+    /// Проверить пользователя на наличие профиля
+    /// </summary>
+    /// <param name="mediator">Медиатор CQRS</param>
+    /// <param name="userId">Идентификатор пользователя</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Существует ли профиль пользователя</returns>
+    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [HttpGet("{userId}/checkUserProfile")]
+    public async Task<bool> CheckUserProfileAsync(
+        [FromServices] IMediator mediator,
+        [FromRoute] Guid userId,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new CheckUserProfileQuery(userId), cancellationToken);
 }
