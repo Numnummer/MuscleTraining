@@ -11,19 +11,25 @@ public class SignInResponse
     /// Конструктор
     /// </summary>
     /// <param name="result">Результат входа</param>
+    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="jwtToken">Jwt</param>
     public SignInResponse(
-        SignInResult result,
-        string jwtToken = default!)
+        SignInResult result, Guid userId, string jwtToken = default!)
     {
         JwtToken = jwtToken;
         Result = result;
+        UserId = userId;
     }
     
     /// <summary>
     /// Jwt
     /// </summary>
     public string? JwtToken { get; }
+
+    /// <summary>
+    /// Идентификатор пользователя
+    /// </summary>
+    public Guid UserId { get; set; }
     
     /// <summary>
     /// Результат входа

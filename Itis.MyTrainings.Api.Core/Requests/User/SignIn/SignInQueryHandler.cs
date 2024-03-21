@@ -44,6 +44,6 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, SignInResponse>
             token = _jwtService.GenerateJwt(user.Id, role!, user.Email);
         }
 
-        return new SignInResponse(result, token);
+        return new SignInResponse(result, user.Id, token);
     }
 }
