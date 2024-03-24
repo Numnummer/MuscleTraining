@@ -4,6 +4,7 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUser;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Entities;
 using Itis.MyTrainings.Api.Core.Exceptions;
+using Itis.MyTrainings.Api.Core.Extensions;
 using MediatR;
 
 namespace Itis.MyTrainings.Api.Core.Requests.User.RegisterUser;
@@ -57,7 +58,7 @@ public class RegisterUserCommandHandler
         {
             var claims = new List<Claim>
             {
-                new (ClaimTypes.Role, request.Role)
+                new (ClaimTypes.Role, request.Role.ToUpperFirstCharString())
             };
 
             await _userService.AddUserRoleAsync(user, request.Role);

@@ -3,8 +3,8 @@ using Itis.MyTrainings.Api.Contracts.Requests.Training.PostTraining;
 using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.Training.GetTrainings;
 using Itis.MyTrainings.Api.Core.Requests.Training.PostTraining;
+using Itis.MyTrainings.Api.Web.Attributes;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
@@ -22,7 +22,7 @@ public class TrainingController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns>Идентификатор тренировки</returns>
-    [Authorize]
+    [Policy(PolicyConstants.IsDefaultUser)]
     [HttpPost("{userId}")]
     public async Task<PostTrainingResponse> PostTrainingAsync(
         [FromServices] IMediator mediator,
@@ -44,7 +44,7 @@ public class TrainingController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [Authorize]
+    [Policy(PolicyConstants.IsDefaultUser)]
     [HttpGet("{userId}")]
     public async Task<GetTrainingsResponse> GetTrainingsAsync(
         [FromServices] IMediator mediator,
