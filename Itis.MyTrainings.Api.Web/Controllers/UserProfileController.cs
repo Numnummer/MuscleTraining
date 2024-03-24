@@ -23,7 +23,7 @@ public class UserProfileController : BaseController
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpGet("{userId}")]
     public async Task<GetUserProfileByIdResponse> GetProfileById(
         [FromServices] IMediator mediator,
@@ -41,7 +41,7 @@ public class UserProfileController : BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpPost("{userId}")]
     public async Task<PostUserProfileResponse> PostUserProfile(
         [FromServices] IMediator mediator,
@@ -66,7 +66,7 @@ public class UserProfileController : BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns>Идентификатор обновленной сущности</returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpPut("{userId}")]
     public async Task<PutUserProfileResponse> PutUserProfile(
         [FromServices] IMediator mediator,

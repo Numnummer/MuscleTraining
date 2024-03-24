@@ -118,9 +118,9 @@ public static class WebApplicationBuilderExtensions
         
         builder.Services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddCookie()
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            .AddJwtBearer(options =>
             {
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
@@ -130,14 +130,6 @@ public static class WebApplicationBuilderExtensions
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuerSigningKey = true,
-                };
-                options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        context.Token = context.Request.Cookies["tk"];
-                        return Task.CompletedTask;
-                    }
                 };
             });
     }

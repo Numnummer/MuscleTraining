@@ -22,7 +22,7 @@ public class TrainingController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns>Идентификатор тренировки</returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpPost("{userId}")]
     public async Task<PostTrainingResponse> PostTrainingAsync(
         [FromServices] IMediator mediator,
@@ -44,7 +44,7 @@ public class TrainingController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpGet("{userId}")]
     public async Task<GetTrainingsResponse> GetTrainingsAsync(
         [FromServices] IMediator mediator,

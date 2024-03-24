@@ -1,6 +1,5 @@
 ﻿using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Contracts.Requests.Exercise.PostExercise;
-using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.PostExercise;
 using MediatR;
@@ -22,7 +21,7 @@ public class ExerciseController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpPost("{userId}")]
     public async Task<PostExerciseResponse> PostExerciseAsync(
         [FromServices] IMediator mediator,
@@ -47,7 +46,7 @@ public class ExerciseController: BaseController
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpGet("{userId}")]
     public async Task<GetExercisesResponse> GetExercisesAsync(
         [FromServices] IMediator mediator,

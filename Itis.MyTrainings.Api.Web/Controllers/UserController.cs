@@ -6,7 +6,6 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithYandex;
 using Itis.MyTrainings.Api.Contracts.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Contracts.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Core.Abstractions;
-using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.User.CheckUserProfile;
 using Itis.MyTrainings.Api.Core.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Core.Requests.User.GetResetPasswordCode;
@@ -90,8 +89,6 @@ public class UserController: BaseController
                 Email = request.Email,
                 Password = request.Password,
             });
-            
-            HttpContext.Response.Cookies.Append("tk", result.JwtToken);
         }
         catch (Exception e)
         {
@@ -165,7 +162,7 @@ public class UserController: BaseController
     /// </summary>
     /// <param name="mediator"></param>
     /// <returns></returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpGet("currentUserInfo")]
     public async Task<ActionResult> GetCurrentUserInfo(
         [FromServices] IMediator mediator)
@@ -234,7 +231,7 @@ public class UserController: BaseController
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Существует ли профиль пользователя</returns>
-    [Authorize(Policy = PolicyConstants.IsDefaultUser)]
+    [Authorize]
     [HttpGet("{userId}/checkUserProfile")]
     public async Task<bool> CheckUserProfileAsync(
         [FromServices] IMediator mediator,
