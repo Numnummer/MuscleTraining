@@ -100,7 +100,7 @@ public static class WebApplicationBuilderExtensions
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                         .RequireAuthenticatedUser()
                         .Build();
-                    opt.AddRoles();
+                    opt.PolicyConfigure();
                 });
     }
 
