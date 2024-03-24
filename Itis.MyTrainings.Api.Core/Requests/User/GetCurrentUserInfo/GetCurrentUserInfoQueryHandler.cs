@@ -39,6 +39,7 @@ public class GetCurrentUserInfoQueryHandler:
         {
             UserId = user.Id,
             UserProfileId = userProfile?.Id,
+            Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Gender = userProfile?.Gender,

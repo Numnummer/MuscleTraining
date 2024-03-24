@@ -17,6 +17,11 @@ public class GetCurrentUserInfoResponse
     /// Идентификатор профиля пользователя
     /// </summary>
     public Guid? UserProfileId { get; set; }
+
+    /// <summary>
+    /// Почта
+    /// </summary>
+    public string? Email { get; set; }
     
     /// <summary>
     /// Имя пользователя
