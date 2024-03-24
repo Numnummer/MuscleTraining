@@ -5,8 +5,10 @@ using Itis.MyTrainings.Api.Core.Entities;
 using Itis.MyTrainings.Api.Core.Services;
 using Itis.MyTrainings.Api.PostgreSql;
 using Itis.MyTrainings.Api.Web.Configurators;
+using Itis.MyTrainings.Api.Web.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -62,14 +64,28 @@ public static class WebApplicationBuilderExtensions
                 opt.Password.RequireDigit = false;
             })
             .AddEntityFrameworkStores<EfContext>()
+            .AddUserManager<UserManager<User>>()
+            .AddSignInManager<SignInManager<User>>()
             .AddDefaultTokenProviders();
         builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromMinutes(5));
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddCustomSwagger();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: SpecificOrigins.MyAllowSpecificOrigins, 
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:5173")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                });
+        });
     }
-    
+
     /// <summary>
     /// Добавить и настроить авторизацию
     /// </summary>
@@ -77,9 +93,17 @@ public static class WebApplicationBuilderExtensions
     public static void ConfigureAuthorization(this WebApplicationBuilder builder)
     {
         builder.Services
-            .AddAuthorization(opt => opt.AddRoles());
+            .AddAuthorization(
+                opt =>
+                {
+                    opt.DefaultPolicy = 
+                        new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    opt.AddRoles();
+                });
     }
-    
+
     /// <summary>
     /// Подключение и настройка JwtBearer
     /// </summary>
@@ -93,23 +117,27 @@ public static class WebApplicationBuilderExtensions
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         
         builder.Services
-            .AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddCookie()
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
+                    ValidateIssuer = false,
                     ValidIssuer = issuer,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidAudience = audience,
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuerSigningKey = true,
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["tk"];
+                        return Task.CompletedTask;
+                    }
                 };
             });
     }

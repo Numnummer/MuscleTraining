@@ -13,10 +13,12 @@ public class SignInResponse
     /// <param name="result">Результат входа</param>
     /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="jwtToken">Jwt</param>
+    /// <param name="refreshToken">Refresh token</param>
     public SignInResponse(
-        SignInResult result, Guid userId, string jwtToken = default!)
+        SignInResult result, Guid userId, string jwtToken = default!, string refreshToken = default!)
     {
         JwtToken = jwtToken;
+        RefreshToken = refreshToken;
         Result = result;
         UserId = userId;
     }
@@ -24,12 +26,17 @@ public class SignInResponse
     /// <summary>
     /// Jwt
     /// </summary>
-    public string? JwtToken { get; }
+    public string JwtToken { get; }
 
+    /// <summary>
+    /// Refresh token
+    /// </summary>
+    public string RefreshToken { get; }
+    
     /// <summary>
     /// Идентификатор пользователя
     /// </summary>
-    public Guid UserId { get; set; }
+    public Guid UserId { get; }
     
     /// <summary>
     /// Результат входа

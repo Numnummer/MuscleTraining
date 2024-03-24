@@ -2,6 +2,7 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Exceptions;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace Itis.MyTrainings.Api.Core.Requests.User.SignIn;
 
@@ -37,13 +38,15 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, SignInResponse>
         var result = await _userService.SignInWithPasswordAsync(user, request.Password);
 
         string token = null!;
+        string refreshToken = null!;
 
         if (result.Succeeded)
         {
             var role = await _userService.GetRoleAsync(user);
             token = _jwtService.GenerateJwt(user.Id, role!, user.Email);
+            refreshToken = _jwtService.GenerateRefreshToken();
         }
 
-        return new SignInResponse(result, user.Id, token);
+        return new SignInResponse(result, user.Id, token, refreshToken);
     }
 }

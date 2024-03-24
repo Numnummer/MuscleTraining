@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -25,13 +26,13 @@ public class JwtService: IJwtService
     public string GenerateJwt(Guid userId, string role, string? email)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var jwtSecurityKey = Encoding.ASCII.GetBytes(
+        var jwtSecurityKey = Encoding.UTF8.GetBytes(
             _configuration["JwtSettings:SecretKey"]!);
         var claims = new List<Claim>
         {
-            new(nameof(ClaimTypes.NameIdentifier), userId.ToString()),
-            new(nameof(ClaimTypes.Role), role),
-            new(nameof(ClaimTypes.Email), email ?? string.Empty)
+            new(ClaimTypes.NameIdentifier, userId.ToString()),
+            new(ClaimTypes.Role, role),
+            new(ClaimTypes.Email, email ?? string.Empty)
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -43,11 +44,20 @@ public class JwtService: IJwtService
                 _configuration["JwtSettings:AccessTokenLifetimeInMinutes"]!)),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(jwtSecurityKey),
-                    SecurityAlgorithms.HmacSha256Signature)
+                    SecurityAlgorithms.HmacSha256)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
         return tokenHandler.WriteToken(token);
+    }
+
+    /// <inheritdoc />
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[256];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

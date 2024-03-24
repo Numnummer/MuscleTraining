@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using Itis.MyTrainings.Api.Core.Constants;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Itis.MyTrainings.Api.Web.Configurators;
@@ -20,7 +22,7 @@ public static class AuthorizationConfigurator
         {
             policyBuilder
                 .RequireAssertion(
-                    x => 
+                    x =>
                         x.User.HasClaim(ClaimTypes.Role, Roles.Coach) || 
                         x.User.HasClaim(ClaimTypes.Role, Roles.Administrator));
         });

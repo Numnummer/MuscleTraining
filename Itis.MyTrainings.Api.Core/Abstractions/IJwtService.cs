@@ -10,4 +10,10 @@ public interface IJwtService
     /// </summary>
     /// <returns></returns>
     public string GenerateJwt(Guid userId, string role, string? email);
+
+    /// <summary>
+    /// Генерация ревреш токена
+    /// </summary>
+    /// <returns></returns>
+    public string GenerateRefreshToken();
 }

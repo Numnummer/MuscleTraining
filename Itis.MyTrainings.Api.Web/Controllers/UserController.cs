@@ -90,6 +90,8 @@ public class UserController: BaseController
                 Email = request.Email,
                 Password = request.Password,
             });
+            
+            HttpContext.Response.Cookies.Append("tk", result.JwtToken);
         }
         catch (Exception e)
         {

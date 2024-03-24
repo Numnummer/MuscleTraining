@@ -19,8 +19,8 @@ public class BaseController: Controller
         var currentUserId = User != null
             ? User.FindFirst(ClaimTypes.NameIdentifier)
             : null;
-        return currentUserId != null
-            ? Guid.Parse(currentUserId.Value)
+        return Guid.TryParse(currentUserId?.Value, out var result)
+            ? result
             : null;
     }
 }
