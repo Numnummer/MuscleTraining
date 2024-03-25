@@ -18,18 +18,16 @@ public class TrainingController: BaseController
     /// Создание тренировки
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns>Идентификатор тренировки</returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpPost("{userId}")]
+    [HttpPost]
     public async Task<PostTrainingResponse> PostTrainingAsync(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         [FromBody] PostTrainingRequest request,
         CancellationToken cancellationToken)
-        => await mediator.Send(new PostTrainingCommand(userId)
+        => await mediator.Send(new PostTrainingCommand(CurrentUserId)
         {
             Name = request.Name,
             TrainingDate = request.TrainingDate,
@@ -40,16 +38,14 @@ public class TrainingController: BaseController
     /// Получить все тренировки
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet("{userId}")]
+    [HttpGet]
     public async Task<GetTrainingsResponse> GetTrainingsAsync(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         [FromQuery] GetTrainingsRequest request,
         CancellationToken cancellationToken)
-        => await mediator.Send(new GetTrainingsQuery(userId), cancellationToken);
+        => await mediator.Send(new GetTrainingsQuery(CurrentUserId), cancellationToken);
 }

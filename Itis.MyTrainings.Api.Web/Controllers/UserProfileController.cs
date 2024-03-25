@@ -20,36 +20,32 @@ public class UserProfileController : BaseController
     /// Получить профиль пользователя по идентификатору
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet("{userId}")]
+    [HttpGet]
     public async Task<GetUserProfileByIdResponse> GetProfileById(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         CancellationToken cancellationToken) 
         => await mediator.Send(
-            new GetUserProfileByIdQuery(userId), 
+            new GetUserProfileByIdQuery(CurrentUserId), 
             cancellationToken);
 
     /// <summary>
     /// Создать профиль пользователя
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpPost("{userId}")]
+    [HttpPost]
     public async Task<PostUserProfileResponse> PostUserProfile(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         [FromBody] PostUserProfileRequest request,
         CancellationToken cancellationToken)
         => await mediator.Send(
-            new PostUserProfileCommand(userId)
+            new PostUserProfileCommand(CurrentUserId)
             {
                 Gender = request.Gender,
                 DateOfBirth = request.DateOfBirth,
@@ -62,18 +58,16 @@ public class UserProfileController : BaseController
     /// Обновить профиль пользователя
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns>Идентификатор обновленной сущности</returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpPut("{userId}")]
+    [HttpPut]
     public async Task<PutUserProfileResponse> PutUserProfile(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         [FromBody] PutUserProfileRequest request,
         CancellationToken cancellationToken)
-        => await mediator.Send(new PutUserProfileCommand(userId)
+        => await mediator.Send(new PutUserProfileCommand(CurrentUserId)
         {
             Gender = request.Gender,
             DateOfBirth = request.DateOfBirth,

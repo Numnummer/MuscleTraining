@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Itis.MyTrainings.Api.Core.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
@@ -11,16 +12,17 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 public class BaseController: Controller
 {
     /// <summary>
-    /// Получить идентификатор текущего пользователя
+    /// Идентификатор текущего пользователя
     /// </summary>
-    /// <returns>Идентификатор текущего пользователя</returns>
-    protected Guid? GetCurrentUserInfo()
+    protected Guid CurrentUserId => GetCurrentUserId();
+    
+    private Guid GetCurrentUserId()
     {
         var currentUserId = User != null
             ? User.FindFirst(ClaimTypes.NameIdentifier)
             : null;
         return Guid.TryParse(currentUserId?.Value, out var result)
             ? result
-            : null;
+            : throw new NotFoundException("Текущий пользователь не найден");
     }
 }

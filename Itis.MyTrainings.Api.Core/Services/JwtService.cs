@@ -51,13 +51,4 @@ public class JwtService: IJwtService
 
         return tokenHandler.WriteToken(token);
     }
-
-    /// <inheritdoc />
-    public string GenerateRefreshToken()
-    {
-        var randomNumber = new byte[256];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
-    }
 }

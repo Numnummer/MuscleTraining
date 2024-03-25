@@ -168,10 +168,7 @@ public class UserController: BaseController
     public async Task<ActionResult> GetCurrentUserInfo(
         [FromServices] IMediator mediator)
     {
-        var currentUserId = GetCurrentUserInfo();
-        
-        if (!currentUserId.HasValue)
-            return BadRequest("Текущий пользователь не найден");
+        var currentUserId = CurrentUserId;
         
         GetCurrentUserInfoResponse result;
         try
@@ -229,14 +226,12 @@ public class UserController: BaseController
     /// Проверить пользователя на наличие профиля
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Существует ли профиль пользователя</returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet("{userId}/checkUserProfile")]
+    [HttpGet("checkUserProfile")]
     public async Task<bool> CheckUserProfileAsync(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         CancellationToken cancellationToken)
-        => await mediator.Send(new CheckUserProfileQuery(userId), cancellationToken);
+        => await mediator.Send(new CheckUserProfileQuery(CurrentUserId), cancellationToken);
 }

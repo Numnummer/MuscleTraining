@@ -38,15 +38,13 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, SignInResponse>
         var result = await _userService.SignInWithPasswordAsync(user, request.Password);
 
         string token = null!;
-        string refreshToken = null!;
 
         if (result.Succeeded)
         {
             var role = await _userService.GetRoleAsync(user);
             token = _jwtService.GenerateJwt(user.Id, role!, user.Email);
-            refreshToken = _jwtService.GenerateRefreshToken();
         }
 
-        return new SignInResponse(result, user.Id, token, refreshToken);
+        return new SignInResponse(result, token);
     }
 }

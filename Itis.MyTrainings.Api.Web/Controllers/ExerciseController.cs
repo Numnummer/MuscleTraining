@@ -18,18 +18,16 @@ public class ExerciseController: BaseController
     /// Создать Упражнение
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpPost("{userId}")]
+    [HttpPost]
     public async Task<PostExerciseResponse> PostExerciseAsync(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         [FromBody] PostExerciseRequest request,
         CancellationToken cancellationToken)
-        => await mediator.Send(new PostExerciseCommand(userId)
+        => await mediator.Send(new PostExerciseCommand(CurrentUserId)
         {
             Name = request.Name,
             Description = request.Description,
@@ -43,16 +41,14 @@ public class ExerciseController: BaseController
     /// Получить упражнения
     /// </summary>
     /// <param name="mediator">Медиатор CQRS</param>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="request">Запрос</param>
     /// <param name="cancellationToken">Токен отмены запроса</param>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet("{userId}")]
+    [HttpGet]
     public async Task<GetExercisesResponse> GetExercisesAsync(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid userId,
         [FromQuery] GetExercisesRequest request,
         CancellationToken cancellationToken)
-        => await mediator.Send(new GetExercisesQuery(userId), cancellationToken);
+        => await mediator.Send(new GetExercisesQuery(CurrentUserId), cancellationToken);
 }
