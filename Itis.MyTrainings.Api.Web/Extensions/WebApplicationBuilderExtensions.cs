@@ -6,6 +6,7 @@ using Itis.MyTrainings.Api.Core.Services;
 using Itis.MyTrainings.Api.PostgreSql;
 using Itis.MyTrainings.Api.Web.Configurators;
 using Itis.MyTrainings.Api.Web.Constants;
+using Itis.MyTrainings.Api.Web.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -167,4 +168,12 @@ public static class WebApplicationBuilderExtensions
                 var filePath = Path.Combine(AppContext.BaseDirectory, "Itis.MyTrainings.Api.Web.xml");
                 c.IncludeXmlComments(filePath);
             });
+    
+    /// <summary>
+    /// Использовать обработчик исключений.
+    /// </summary>
+    /// <param name="builder">Билдер пайплайна ASP.NET Core</param>
+    /// <returns></returns>
+    public static IApplicationBuilder UseExceptionHandling(this IApplicationBuilder builder)
+        => builder.UseMiddleware<ExceptionHandlingMiddleware>();
 }

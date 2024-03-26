@@ -12,6 +12,7 @@ var app = builder.Build();
 
 app.UseRouting();
 app.UseHttpsRedirection();
+app.UseExceptionHandling();
 app.UseCors(SpecificOrigins.MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();

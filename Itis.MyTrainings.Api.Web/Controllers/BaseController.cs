@@ -18,9 +18,7 @@ public class BaseController: Controller
     
     private Guid GetCurrentUserId()
     {
-        var currentUserId = User != null
-            ? User.FindFirst(ClaimTypes.NameIdentifier)
-            : null;
+        var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
         return Guid.TryParse(currentUserId?.Value, out var result)
             ? result
             : throw new NotFoundException("Текущий пользователь не найден");
