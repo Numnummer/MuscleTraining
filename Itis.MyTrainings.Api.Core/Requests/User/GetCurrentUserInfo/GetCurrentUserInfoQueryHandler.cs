@@ -1,6 +1,7 @@
 ﻿using Itis.MyTrainings.Api.Contracts.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Exceptions;
+using Itis.MyTrainings.Api.Core.Extensions;
 using Itis.MyTrainings.Api.Core.Requests.User.GetResetPasswordCode;
 using MediatR;
 
@@ -34,7 +35,7 @@ public class GetCurrentUserInfoQueryHandler:
             ?? throw new EntityNotFoundException<Entities.User>("Пользователи не найдены");
 
         var userProfile = await _userService.FindUserProfileByUserId(user.Id, cancellationToken);
-
+        
         return new GetCurrentUserInfoResponse
         {
             UserId = user.Id,
@@ -42,7 +43,7 @@ public class GetCurrentUserInfoQueryHandler:
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Gender = userProfile?.Gender,
+            Gender = userProfile?.Gender?.GetDescription(),
             DateOfBirth = userProfile?.DateOfBirth,
             PhoneNumber = userProfile?.PhoneNumber,
             Height = userProfile?.Height,

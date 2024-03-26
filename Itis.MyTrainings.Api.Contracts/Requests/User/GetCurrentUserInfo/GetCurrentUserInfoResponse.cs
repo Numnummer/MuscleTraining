@@ -36,7 +36,7 @@ public class GetCurrentUserInfoResponse
     /// <summary>
     /// Пол
     /// </summary>
-    public Genders? Gender { get; set; }
+    public string? Gender { get; set; }
     
     /// <summary>
     /// Дата рождения
