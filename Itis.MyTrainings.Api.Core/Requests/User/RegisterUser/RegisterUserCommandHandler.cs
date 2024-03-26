@@ -38,7 +38,11 @@ public class RegisterUserCommandHandler
     {
         var isUserExist = await _userService.FindUserByEmailAsync(request.Email);
         if (isUserExist != null)
-            throw new ValidationException("Пользователь с данной почтой уже существует");
+            throw new ValidationException("Пользователь с данной почтой уже существует");  
+        
+        isUserExist = await _userService.FindUserByUserNameAsync(request.UserName);
+        if (isUserExist != null)
+            throw new ValidationException("Пользователь с данным никнеймом уже существует");
         
         var isRoleExist = await _roleService.IsRoleExistAsync(request.Role);
         if (!isRoleExist)

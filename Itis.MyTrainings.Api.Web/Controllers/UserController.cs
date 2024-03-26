@@ -17,6 +17,7 @@ using Itis.MyTrainings.Api.Core.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Core.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Web.Attributes;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
@@ -76,6 +77,20 @@ public class UserController : BaseController
                 Password = request.Password,
             }, cancellationToken);
 
+    /// <summary>
+    /// Выйти из аккаунта
+    /// </summary>
+    /// <param name="mediator">IMediator</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    [HttpPost("signOut")]
+    public async Task SignOut(
+        [FromServices] IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        await HttpContext.SignOutAsync();
+    }
+        
+    
     /// <summary>
     /// Отправить код восстановления пароля
     /// </summary>
