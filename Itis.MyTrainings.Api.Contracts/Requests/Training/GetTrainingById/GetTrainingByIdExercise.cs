@@ -1,19 +1,14 @@
-﻿namespace Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
+﻿namespace Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainingById;
 
 /// <summary>
 /// Упражнение
 /// </summary>
-public class GetExercisesResponseItem
+public class GetTrainingByIdExercise
 {
-    /// <summary>
-    /// Идентификатор упражнения
-    /// </summary>
-    public Guid Id { get; set; }
-    
     /// <summary>
     /// Название
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } = default!;
 
     /// <summary>
     /// Описание

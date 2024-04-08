@@ -37,9 +37,10 @@ public class GetTrainingQueryHandler: IRequestHandler<GetTrainingsQuery, GetTrai
         var result = await trainings
             .Select(x => new GetTrainingsResponseItem
             {
+                Id = x.Id,
                 Name = x.Name,
                 TrainingDate = x.TrainingDate,
-                Exercises = x.Exercises.Select(y => new GetTrainingsResponseExercise()
+                Exercises = x.Exercises.Select(y => new GetTrainingsResponseExercise
                     {
                         Id = y.Id,
                         Name = y.Name,

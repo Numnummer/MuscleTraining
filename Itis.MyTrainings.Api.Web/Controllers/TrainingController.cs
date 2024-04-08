@@ -1,6 +1,8 @@
-﻿using Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainings;
+﻿using Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainingById;
+using Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainings;
 using Itis.MyTrainings.Api.Contracts.Requests.Training.PostTraining;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Requests.Training.GetTrainingById;
 using Itis.MyTrainings.Api.Core.Requests.Training.GetTrainings;
 using Itis.MyTrainings.Api.Core.Requests.Training.PostTraining;
 using Itis.MyTrainings.Api.Web.Attributes;
@@ -48,4 +50,16 @@ public class TrainingController: BaseController
         [FromQuery] GetTrainingsRequest request,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetTrainingsQuery(CurrentUserId), cancellationToken);
+    
+    /// <summary>
+    /// Получить тренировку по Id
+    /// </summary>
+    /// <returns></returns>
+    [Policy(PolicyConstants.IsDefaultUser)]
+    [HttpGet]
+    public async Task<GetTrainingByIdResponse> GetTrainingByIdAsync(
+        [FromServices] IMediator mediator,
+        [FromQuery] Guid trainingId,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new GetTrainingByIdQuery(CurrentUserId, trainingId), cancellationToken);
 }

@@ -1,6 +1,8 @@
-﻿using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
+﻿using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExerciseById;
+using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Contracts.Requests.Exercise.PostExercise;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExerciseById;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.PostExercise;
 using Itis.MyTrainings.Api.Web.Attributes;
@@ -51,4 +53,16 @@ public class ExerciseController: BaseController
         [FromQuery] GetExercisesRequest request,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetExercisesQuery(CurrentUserId), cancellationToken);
+
+    /// <summary>
+    /// Получить упражнение по Id
+    /// </summary>
+    /// <returns></returns>
+    [Policy(PolicyConstants.IsDefaultUser)]
+    [HttpGet]
+    public async Task<GetExerciseByIdResponse> GetExerciseByIdAsync(
+        [FromServices] IMediator mediator,
+        [FromQuery] Guid exerciseId,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new GetExerciseByIdQuery(CurrentUserId, exerciseId), cancellationToken);
 }

@@ -6,7 +6,7 @@
 public class GetTrainingsResponseExercise
 {
     /// <summary>
-    /// Идентификатор
+    /// Идентификатор упражнения
     /// </summary>
     public Guid Id { get; set; }
     
