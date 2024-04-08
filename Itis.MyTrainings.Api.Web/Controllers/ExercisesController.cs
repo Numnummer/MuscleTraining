@@ -14,7 +14,7 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 /// <summary>
 /// Контроллер упражнений
 /// </summary>
-public class ExerciseController: BaseController
+public class ExercisesController: BaseController
 {
     /// <summary>
     /// Создать Упражнение
@@ -59,10 +59,10 @@ public class ExerciseController: BaseController
     /// </summary>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet]
+    [HttpGet("{exerciseId}")]
     public async Task<GetExerciseByIdResponse> GetExerciseByIdAsync(
         [FromServices] IMediator mediator,
-        [FromQuery] Guid exerciseId,
+        [FromRoute] Guid exerciseId,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetExerciseByIdQuery(CurrentUserId, exerciseId), cancellationToken);
 }

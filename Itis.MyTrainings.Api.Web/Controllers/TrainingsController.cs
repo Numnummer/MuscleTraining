@@ -14,7 +14,7 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 /// <summary>
 /// Контроллер сущности "Тренировки"
 /// </summary>
-public class TrainingController: BaseController
+public class TrainingsController: BaseController
 {
     /// <summary>
     /// Создание тренировки
@@ -56,10 +56,10 @@ public class TrainingController: BaseController
     /// </summary>
     /// <returns></returns>
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet]
+    [HttpGet("{trainingId}")]
     public async Task<GetTrainingByIdResponse> GetTrainingByIdAsync(
         [FromServices] IMediator mediator,
-        [FromQuery] Guid trainingId,
+        [FromRoute] Guid trainingId,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetTrainingByIdQuery(CurrentUserId, trainingId), cancellationToken);
 }
