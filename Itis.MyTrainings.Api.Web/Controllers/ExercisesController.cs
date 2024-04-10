@@ -2,6 +2,7 @@
 using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Contracts.Requests.Exercise.PostExercise;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Requests.Exercise.DeleteExercise;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExerciseById;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.PostExercise;
@@ -65,4 +66,16 @@ public class ExercisesController: BaseController
         [FromRoute] Guid exerciseId,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetExerciseByIdQuery(CurrentUserId, exerciseId), cancellationToken);
+
+    /// <summary>
+    /// Удалить упражнение по Id
+    /// </summary>
+    /// <returns></returns>
+    [Policy(PolicyConstants.IsDefaultUser)]
+    [HttpDelete("{exerciseId}")]
+    public async Task DeleteExerciseAsync(
+        [FromServices] IMediator mediator,
+        [FromRoute] Guid exerciseId,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new DeleteExerciseCommand(exerciseId), cancellationToken);
 }
