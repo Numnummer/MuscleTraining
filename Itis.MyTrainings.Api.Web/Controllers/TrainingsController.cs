@@ -2,6 +2,7 @@
 using Itis.MyTrainings.Api.Contracts.Requests.Training.GetTrainings;
 using Itis.MyTrainings.Api.Contracts.Requests.Training.PostTraining;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Requests.Training.AddExercisesInTraining;
 using Itis.MyTrainings.Api.Core.Requests.Training.DeleteTraining;
 using Itis.MyTrainings.Api.Core.Requests.Training.GetTrainingById;
 using Itis.MyTrainings.Api.Core.Requests.Training.GetTrainings;
@@ -72,7 +73,23 @@ public class TrainingsController: BaseController
     [HttpDelete("{trainingId}")]
     public async Task DeleteTrainingAsync(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid exerciseId,
+        [FromRoute] Guid trainingId,
         CancellationToken cancellationToken)
-        => await mediator.Send(new DeleteTrainingCommand(exerciseId), cancellationToken);
+        => await mediator.Send(new DeleteTrainingCommand(trainingId), cancellationToken);
+
+    /// <summary>
+    /// Добавить упражнения в тренировку
+    /// </summary>
+    /// <param name="mediator"></param>
+    /// <param name="trainingId"></param>
+    /// <param name="exerciseIds"></param>
+    /// <param name="cancellationToken"></param>
+    [Policy(PolicyConstants.IsDefaultUser)]
+    [HttpPost("{trainingId}/addExercises")]
+    public async Task AddExercisesInTraining(
+        [FromServices] IMediator mediator,
+        [FromRoute] Guid trainingId,
+        [FromBody] List<Guid> exerciseIds,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new AddExercisesInTrainingCommand(trainingId, exerciseIds), cancellationToken);
 }
