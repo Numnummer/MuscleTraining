@@ -34,17 +34,17 @@ public class RegisterUserWithVkCommandHandler : IRequestHandler<RegisterUserWith
         _jwtService = jwtService;
     }
     
-    /// <inheritdoc /> TODO поффиксить роли
+    /// <inheritdoc />
     public async Task<RegisterUserWithVkResponse> Handle(
         RegisterUserWithVkCommand request, 
         CancellationToken cancellationToken)
     {
-        var user = await GetUserFromVkAsync(request.Code!, cancellationToken);
+        var user = await GetUserFromVkAsync(request.AccessToken!, cancellationToken);
 
         var findedUser = await _userService.FindUserByEmailAsync(user.Email!);
         if (findedUser != null)
             return new RegisterUserWithVkResponse(IdentityResult.Success, _jwtService.GenerateJwt(findedUser.Id, Roles.User, findedUser.Email));
-        //TODO try catch
+
         var result = await _userService.RegisterUserAsync(user);
 
         if (result.Succeeded)
@@ -63,8 +63,7 @@ public class RegisterUserWithVkCommandHandler : IRequestHandler<RegisterUserWith
 
     private async Task<Entities.User> GetUserFromVkAsync(string code, CancellationToken cancellationToken)
     {
-        await _vkService.GetAccessTokenAsync(code, cancellationToken);
-        var info = (await _vkService.GetVkUserInfoAsync(cancellationToken)).Response;
+        var info = (await _vkService.GetVkUserInfoAsync(code, cancellationToken)).Response;
 
         var user = new Entities.User()
         {

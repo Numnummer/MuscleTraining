@@ -124,14 +124,6 @@ public class UserController : BaseController
         [FromServices] IMediator mediator,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetCurrentUserInfoQuery(CurrentUserId), cancellationToken);
-
-    /// <summary>
-    /// Авторизировать пользователя через вконтакте
-    /// </summary>
-    /// <returns>Редирект на форму авторизации</returns>
-    [HttpGet("authorizeVk")]
-    public async Task<RedirectResult> VkAuthorize() 
-        => Redirect(_vkService.GetRedirectToAuthorizationUrl());
     
     /// <summary>
     /// Авторизировать пользователя с помощью Вконтакте
@@ -140,8 +132,8 @@ public class UserController : BaseController
     [HttpGet("registerWithVk")]
     public async Task<RegisterUserWithVkResponse> RegisterUserWithVk(
         [FromServices] IMediator mediator,
-        [FromQuery] string code) =>
-        await mediator.Send(new RegisterUserWithVkCommand(code));
+        [FromQuery] string code) 
+        => await mediator.Send(new RegisterUserWithVkCommand(code));
     
 
     /// <summary>

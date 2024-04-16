@@ -8,15 +8,35 @@ namespace Itis.MyTrainings.Api.Core.Models;
 /// </summary>
 public class VkAccessModel
 {
+    /// <summary>
+    /// Uri API вк для авторизации
+    /// </summary>
     protected string? VkAuthorizationUri { get; private set; }
+    
+    /// <summary>
+    /// Базовый домен API вк
+    /// </summary>
     protected string? VkApiUri { get; private set; }
+    
+    /// <summary>
+    /// Uri редиректа после авторизации
+    /// </summary>
     protected string? RedirectUri { get; private set; }
+    
+    /// <summary>
+    /// Id приложения
+    /// </summary>
     protected string? AppId { get; private set; }
+    
+    /// <summary>
+    /// Сервисный ключ
+    /// </summary>
     protected string? ServiceKey { get; private set; }
+    
+    /// <summary>
+    /// Версия API вк
+    /// </summary>
     protected string? Version { get; private set; }
-    protected string? Scope { get; private set; }
-    protected string? ResponseType { get; private set; }
-    protected string? AccessToken { get; set; }
 
     
     /// <summary>
@@ -28,7 +48,6 @@ public class VkAccessModel
         AppId = configuration["Vk:AppId"];
         ServiceKey = configuration["Vk:ServiceKey"];
         RedirectUri = configuration["Vk:RedirectUri"];
-        Scope = configuration["Vk:Scope"];
         Version = configuration["Vk:Version"];
         VkAuthorizationUri = configuration["Vk:VkAuthorizationUri"];
         VkApiUri = configuration["Vk:VkApiUri"];

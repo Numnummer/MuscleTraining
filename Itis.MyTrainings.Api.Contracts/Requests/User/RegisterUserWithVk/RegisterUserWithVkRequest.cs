@@ -8,14 +8,14 @@ public class RegisterUserWithVkRequest
     /// <summary>
     /// Конструктор
     /// </summary>
-    /// <param name="code">Код авторизации</param>
-    public RegisterUserWithVkRequest(string code)
+    /// <param name="accessToken">Код авторизации</param>
+    public RegisterUserWithVkRequest(string accessToken)
     {
-        Code = code;
+        AccessToken = accessToken;
     }
 
     /// <summary>
     /// Код авторизации
     /// </summary>
-    public string? Code { get; set; }
+    public string? AccessToken { get; set; }
 }

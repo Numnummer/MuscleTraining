@@ -14,6 +14,9 @@ public class AccessTokenResponse
 
     [JsonPropertyName("access_token")]
     public string? AccessToken { get; set; }
+
+    [JsonPropertyName("email")] 
+    public string? Email { get; set; }
     
     [JsonPropertyName("error")]
     public string? Error { get; set; }

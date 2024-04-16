@@ -15,8 +15,7 @@ namespace Itis.MyTrainings.Api.Core.Services;
 /// </summary>
 public class VkService : VkAccessModel, IVkService
 {
-    private IHttpHelperService _httpHelperService;
-    private readonly IConfiguration _configuration;
+    private readonly IHttpHelperService _httpHelperService;
 
     /// <summary>
     /// Конструктор
@@ -32,22 +31,27 @@ public class VkService : VkAccessModel, IVkService
     }
 
     /// <inheritdoc />
-    public async Task<VkUserModel> GetVkUserInfoAsync(CancellationToken cancellationToken)
+    public async Task<VkUserModel> GetVkUserInfoAsync(string code, CancellationToken cancellationToken)
     {
+        var model = await GetAccessTokenAsync(code, cancellationToken);
+        
         var content = new MultipartFormDataContent();
-        content.Add(new StringContent(AccessToken!), "access_token");
+        content.Add(new StringContent(model.AccessToken!), "access_token");
         content.Add(new StringContent(Version!), "v");
 
         var response = await _httpHelperService.PostAsync(
             $"{VkApiUri}method/account.getProfileInfo", content, cancellationToken);
 
-        return await JsonSerializer.DeserializeAsync<VkUserModel>(await response.Content.ReadAsStreamAsync());
+        var result =  await JsonSerializer.DeserializeAsync<VkUserModel>(
+            await response.Content.ReadAsStreamAsync(cancellationToken),
+            cancellationToken: cancellationToken);
+        result!.Response.Mail = model!.Email!;
+
+        return result;
     }
 
-    /// <inheritdoc />
-    public async Task GetAccessTokenAsync(string code, CancellationToken cancellationToken)
+    private async Task<AccessTokenResponse> GetAccessTokenAsync(string code, CancellationToken cancellationToken)
     {
-        //TODO в try catch
         var response = await _httpHelperService.GetAsync(
             $"{VkAuthorizationUri}access_token?client_id={AppId}&client_secret={ServiceKey}&redirect_uri={RedirectUri}&code={code}",
             cancellationToken);
@@ -55,18 +59,13 @@ public class VkService : VkAccessModel, IVkService
         if (!response.IsSuccessStatusCode)
             throw new HttpRequestException("Не получилось достучаться до Вк");
         
-        //TODO в try catch
-       var model = await JsonSerializer.DeserializeAsync<AccessTokenResponse>(
-           await response.Content.ReadAsStreamAsync());
+        var model = await JsonSerializer.DeserializeAsync<AccessTokenResponse>(
+            await response.Content.ReadAsStreamAsync(cancellationToken), 
+            cancellationToken: cancellationToken);
 
-       if (model?.Error != null)
-           throw new HttpRequestException(model.ErrorDescription);
-
-       AccessToken = model.AccessToken;
+        if (model?.Error != null)
+            throw new HttpRequestException(model.ErrorDescription);
+       
+        return model!;
     }
-    
-    /// <inheritdoc /> // TODO: вынести в appsettings.json
-    public string GetRedirectToAuthorizationUrl() => 
-        $"{VkAuthorizationUri}authorize?client_id={AppId}&scope={Scope}&response_type={ResponseType}" +
-        $"&v={Version}&redirect_uri={RedirectUri}";
 }

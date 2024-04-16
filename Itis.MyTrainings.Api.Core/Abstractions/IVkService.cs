@@ -8,24 +8,11 @@ namespace Itis.MyTrainings.Api.Core.Abstractions;
 public interface IVkService
 {
     /// <summary>
-    /// Получить Url формы авторизации
-    /// </summary>
-    /// <returns></returns>
-    public string GetRedirectToAuthorizationUrl();
-
-    /// <summary>
-    /// Получить токен доступа
-    /// </summary>
-    /// <param name="code"></param>
-    /// <param name="cancellationToken">Токен отмены запроса</param>
-    /// <returns></returns>
-    public Task GetAccessTokenAsync(string code, CancellationToken cancellationToken);
-
-    /// <summary>
     /// Получить информацию о пользователе
     /// </summary>
+    /// <param name="code">Код для авторизации</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<VkUserModel> GetVkUserInfoAsync(CancellationToken cancellationToken);
+    public Task<VkUserModel> GetVkUserInfoAsync(string code, CancellationToken cancellationToken);
 
 }

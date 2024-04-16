@@ -1,0 +1,26 @@
+﻿version: '1'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: TicTacToe
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "P@ssw0rd"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+    - "5433:5432"
+  frontend:
+    build:
+      context: ../Mouse-front/mouse-frontend-app
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '5049:5049'

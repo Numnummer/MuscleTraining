@@ -12,9 +12,9 @@ public class RegisterUserWithVkCommand : RegisterUserWithVkRequest, IRequest<Reg
     /// <summary>
     /// Конструктор
     /// </summary>
-    /// <param name="code">Код авторизации</param>
-    public RegisterUserWithVkCommand(string code) : 
-        base(code)
+    /// <param name="accessToken">Код авторизации</param>
+    public RegisterUserWithVkCommand(string accessToken) : 
+        base(accessToken)
     {
     }
 }
