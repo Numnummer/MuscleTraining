@@ -143,12 +143,19 @@ public class UserController : BaseController
     /// <summary>
     /// Авторизировать пользователя с помощью Вконтакте
     /// </summary>
+    /// <param name="mediator">Медиатор CQRS</param>
+    /// <param name="request">Запрос</param>
     /// <returns></returns>
     [HttpGet("registerWithVk")]
     public async Task<RegisterUserWithVkResponse> RegisterUserWithVk(
         [FromServices] IMediator mediator,
-        [FromQuery] string code) 
-        => await mediator.Send(new RegisterUserWithVkCommand(code));
+        [FromQuery] RegisterUserWithVkRequest request) 
+        => await mediator.Send(new RegisterUserWithVkCommand()
+        {
+            Email = request.Email,
+            Name = request.Name,
+            Surname = request.Surname,
+        });
     
 
     /// <summary>

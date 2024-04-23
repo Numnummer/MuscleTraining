@@ -1,4 +1,6 @@
-﻿namespace Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithVk;
+﻿using System.Security.AccessControl;
+
+namespace Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithVk;
 
 /// <summary>
 /// Запрос на авторизацию пользователя через вконтакте
@@ -6,16 +8,17 @@
 public class RegisterUserWithVkRequest
 {
     /// <summary>
-    /// Конструктор
+    /// Почта
     /// </summary>
-    /// <param name="accessToken">Код авторизации</param>
-    public RegisterUserWithVkRequest(string accessToken)
-    {
-        AccessToken = accessToken;
-    }
-
+    public string Email { get; set; }
+    
     /// <summary>
-    /// Код авторизации
+    /// Имя
     /// </summary>
-    public string? AccessToken { get; set; }
+    public string Name { get; set; }
+    
+    /// <summary>
+    /// Фамилия
+    /// </summary>
+    public string Surname { get; set; }
 }

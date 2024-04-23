@@ -4,6 +4,8 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithVk;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Entities;
+using Itis.MyTrainings.Api.Core.Exceptions;
+using Itis.MyTrainings.Api.Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -39,16 +41,27 @@ public class RegisterUserWithVkCommandHandler : IRequestHandler<RegisterUserWith
         RegisterUserWithVkCommand request, 
         CancellationToken cancellationToken)
     {
-        var user = await GetUserFromVkAsync(request.AccessToken!, cancellationToken);
+        ArgumentNullException.ThrowIfNull(request);
 
-        var findedUser = await _userService.FindUserByEmailAsync(user.Email!);
+        var findedUser = await _userService.FindUserByEmailAsync(request.Email);
         if (findedUser != null)
             return new RegisterUserWithVkResponse(IdentityResult.Success, _jwtService.GenerateJwt(findedUser.Id, Roles.User, findedUser.Email));
+        
+        var user = new Entities.User()
+        {
+            FirstName = request.Name,
+            LastName = request.Surname,
+            UserName = $"{request.Name}{request.Surname}".ToTransliatiateLatin(),
+            Email = request.Email,
+        };
+        
 
         var result = await _userService.RegisterUserAsync(user);
 
-        if (result.Succeeded)
-            await _userService.AddUserRoleAsync(user, Roles.User);
+        if (!result.Succeeded)
+            throw new ApplicationExceptionBase(string.Join(", ", result.Errors.Select(x => x.Description)));
+        
+        await _userService.AddUserRoleAsync(user, Roles.User);
 
         var claims = new List<Claim>
         {
@@ -59,20 +72,5 @@ public class RegisterUserWithVkCommandHandler : IRequestHandler<RegisterUserWith
             await _userService.AddClaimsAsync(user, claims);
 
         return new RegisterUserWithVkResponse(result, _jwtService.GenerateJwt(user.Id, Roles.User, user.Email));
-    }
-
-    private async Task<Entities.User> GetUserFromVkAsync(string code, CancellationToken cancellationToken)
-    {
-        var info = (await _vkService.GetVkUserInfoAsync(code, cancellationToken)).Response;
-
-        var user = new Entities.User()
-        {
-            FirstName = info.FirstName,
-            LastName = info.LastName,
-            PhoneNumber = info.Phone,
-            UserName = info.Id.ToString(),
-            Email = info.Mail,
-        };
-        return user;
     }
 }

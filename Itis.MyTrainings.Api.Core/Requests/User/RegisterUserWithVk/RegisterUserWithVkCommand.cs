@@ -9,12 +9,4 @@ namespace Itis.MyTrainings.Api.Core.Requests.User.RegisterUserWithVk;
 /// </summary>
 public class RegisterUserWithVkCommand : RegisterUserWithVkRequest, IRequest<RegisterUserWithVkResponse>
 {
-    /// <summary>
-    /// Конструктор
-    /// </summary>
-    /// <param name="accessToken">Код авторизации</param>
-    public RegisterUserWithVkCommand(string accessToken) : 
-        base(accessToken)
-    {
-    }
 }
