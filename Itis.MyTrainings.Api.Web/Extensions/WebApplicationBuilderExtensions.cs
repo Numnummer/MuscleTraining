@@ -78,8 +78,7 @@ public static class WebApplicationBuilderExtensions
             options.AddPolicy(name: SpecificOrigins.MyAllowSpecificOrigins, 
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:5173")
-                        .AllowAnyMethod()
+                    builder.AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowAnyOrigin()
                         .SetIsOriginAllowedToAllowWildcardSubdomains();
