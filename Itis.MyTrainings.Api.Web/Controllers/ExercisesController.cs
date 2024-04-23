@@ -1,6 +1,9 @@
-﻿using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
+﻿using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExerciseById;
+using Itis.MyTrainings.Api.Contracts.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Contracts.Requests.Exercise.PostExercise;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Requests.Exercise.DeleteExercise;
+using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExerciseById;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.GetExercises;
 using Itis.MyTrainings.Api.Core.Requests.Exercise.PostExercise;
 using Itis.MyTrainings.Api.Web.Attributes;
@@ -12,7 +15,7 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 /// <summary>
 /// Контроллер упражнений
 /// </summary>
-public class ExerciseController: BaseController
+public class ExercisesController: BaseController
 {
     /// <summary>
     /// Создать Упражнение
@@ -51,4 +54,28 @@ public class ExerciseController: BaseController
         [FromQuery] GetExercisesRequest request,
         CancellationToken cancellationToken)
         => await mediator.Send(new GetExercisesQuery(CurrentUserId), cancellationToken);
+
+    /// <summary>
+    /// Получить упражнение по Id
+    /// </summary>
+    /// <returns></returns>
+    [Policy(PolicyConstants.IsDefaultUser)]
+    [HttpGet("{exerciseId}")]
+    public async Task<GetExerciseByIdResponse> GetExerciseByIdAsync(
+        [FromServices] IMediator mediator,
+        [FromRoute] Guid exerciseId,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new GetExerciseByIdQuery(CurrentUserId, exerciseId), cancellationToken);
+
+    /// <summary>
+    /// Удалить упражнение по Id
+    /// </summary>
+    /// <returns></returns>
+    [Policy(PolicyConstants.IsDefaultUser)]
+    [HttpDelete("{exerciseId}")]
+    public async Task DeleteExerciseAsync(
+        [FromServices] IMediator mediator,
+        [FromRoute] Guid exerciseId,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new DeleteExerciseCommand(exerciseId), cancellationToken);
 }

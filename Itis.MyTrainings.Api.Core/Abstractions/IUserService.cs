@@ -77,6 +77,19 @@ public interface IUserService
     public Task<SignInResult> SignInWithPasswordAsync(User user, string password);
 
     /// <summary>
+    /// Выйти
+    /// </summary>
+    /// <returns>-</returns>
+    public Task SignOutAsync();
+
+    /// <summary>
+    /// Найти пользователя по никнейму
+    /// </summary>
+    /// <param name="userName"></param>
+    /// <returns></returns>
+    public Task<User?> FindUserByUserNameAsync(string userName);
+
+    /// <summary>
     /// Сбросить пароль
     /// </summary>
     /// <param name="user">Пользователь</param>

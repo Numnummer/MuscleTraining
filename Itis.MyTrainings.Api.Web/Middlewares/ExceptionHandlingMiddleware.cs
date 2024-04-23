@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Text.Json;
 using Itis.MyTrainings.Api.Core.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,10 @@ public class ExceptionHandlingMiddleware
         catch (ApplicationExceptionBase ex)
         {
             await HandleApplicationExceptionBaseAsync(context, ex);
+        }
+        catch (ValidationException ex)
+        {
+            await HandleValidationExceptionAsync(context, ex);
         }
         catch (OutOfMemoryException ex)
         {
@@ -125,6 +130,24 @@ public class ExceptionHandlingMiddleware
     /// <param name="exception">Исключение</param>
     /// <returns>Задача на обработку запроса ASP.NET</returns>
     private async Task HandleApplicationExceptionBaseAsync(HttpContext context, ApplicationExceptionBase exception)
+    {
+        var errorText = exception.Message;
+        var logLevel = LogLevel.Warning;
+        var responseCode = exception switch
+        {
+            AuthorizationException => HttpStatusCode.Unauthorized,
+            _ => HttpStatusCode.BadRequest
+        };
+        await LogAndReturnAsync(context, exception, errorText, responseCode, logLevel);
+    }
+
+    /// <summary>
+    /// Обработка исключения <see cref="ValidationException"/>
+    /// </summary>
+    /// <param name="context">Контекст запроса ASP.NET</param>
+    /// <param name="exception">Исключение</param>
+    /// <returns>Задача на обработку запроса ASP.NET</returns>
+    private async Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
     {
         var errorText = exception.Message;
         var logLevel = LogLevel.Warning;

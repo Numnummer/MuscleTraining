@@ -34,6 +34,7 @@ public class GetExercisesQueryHandler: IRequestHandler<GetExercisesQuery, GetExe
         var result = await exercises
             .Select(x => new GetExercisesResponseItem
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 Approaches = x.Approaches,

@@ -3,6 +3,11 @@
 public class GetTrainingsResponseItem
 {
     /// <summary>
+    /// Идентификатор тренировки
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
     /// Наименование тренировки
     /// </summary>
     public string? Name { get; set; }

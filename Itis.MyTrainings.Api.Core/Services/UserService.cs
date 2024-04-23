@@ -69,6 +69,14 @@ public class UserService: IUserService
         => await _signInManager.PasswordSignInAsync(user, password, false, false);
 
     /// <inheritdoc />
+    public async Task SignOutAsync()
+        => await _signInManager.SignOutAsync();
+
+    /// <inheritdoc />
+    public async Task<User?> FindUserByUserNameAsync(string userName)
+        => await _userManager.FindByNameAsync(userName);
+
+    /// <inheritdoc />
     public async Task<IdentityResult> SetPasswordWithEmailAsync(User user, string code, string newPassword)
         => await _userManager.ResetPasswordAsync(user, code, newPassword);
 
