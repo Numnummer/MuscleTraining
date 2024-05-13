@@ -56,6 +56,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddScoped<IVkService, VkService>();
         builder.Services.AddScoped<IYandexService, YandexService>();
         builder.Services.AddSingleton<IHttpHelperService, HttpHelperService>();
+        builder.Services.AddSignalR();
         builder.Services
             .AddIdentity<User, Role>(opt =>
             {

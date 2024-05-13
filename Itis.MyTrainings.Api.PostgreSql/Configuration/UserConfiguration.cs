@@ -52,5 +52,15 @@ internal class UserConfiguration: IEntityTypeConfiguration<User>
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId)
             .HasPrincipalKey(x => x.Id);
+        
+        builder.HasMany(x => x.SendedMessages)
+            .WithOne(x => x.Sender)
+            .HasForeignKey(x => x.SenderId)
+            .HasPrincipalKey(x => x.Id);
+        
+        builder.HasMany(x => x.RecievedMessages)
+            .WithOne(x => x.Reciever)
+            .HasForeignKey(x => x.RecieverId)
+            .HasPrincipalKey(x => x.Id);
     }
 }

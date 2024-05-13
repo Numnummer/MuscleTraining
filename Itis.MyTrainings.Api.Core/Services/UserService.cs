@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Entities;
+using Itis.MyTrainings.Api.Core.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,7 @@ public class UserService: IUserService
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     private readonly IDbContext _dbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     /// <summary>
     /// Конструктор
@@ -22,11 +25,13 @@ public class UserService: IUserService
     public UserService(
         UserManager<User> userManager,
         SignInManager<User> signInManager,
+        IHttpContextAccessor httpContextAccessor,
         IDbContext dbContext)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     /// <inheritdoc />
@@ -67,6 +72,15 @@ public class UserService: IUserService
     /// <inheritdoc />
     public async Task<SignInResult> SignInWithPasswordAsync(User user, string password)
         => await _signInManager.PasswordSignInAsync(user, password, false, false);
+
+    /// <inheritdoc />
+    public Task<Guid> GetCurrentUserId()
+    {
+        var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+        return Task.FromResult(Guid.TryParse(currentUserId?.Value, out var result)
+            ? result
+            : throw new NotFoundException("Текущий пользователь не найден"));
+    }
 
     /// <inheritdoc />
     public async Task SignOutAsync()

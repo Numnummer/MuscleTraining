@@ -24,6 +24,11 @@ public interface IDbContext
     DbSet<Training> Trainings { get; set; }
     
     /// <summary>
+    /// Сообщения
+    /// </summary>
+    DbSet<Message> Messages { get; set; }
+    
+    /// <summary>
     /// Сохранить изменения в БД
     /// </summary>
     /// <param name="cancellationToken">Токен отмены</param>

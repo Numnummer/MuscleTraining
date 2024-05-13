@@ -44,4 +44,7 @@ public class EfContext: IdentityDbContext<User, Role, Guid>, IDbContext
 
     /// <inheritdoc />
     public DbSet<Training> Trainings { get; set; }
+    
+    /// <inheritdoc />
+    public DbSet<Message> Messages { get; set; }
 }

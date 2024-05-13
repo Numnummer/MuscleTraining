@@ -10,8 +10,13 @@
 
     <ItemGroup>
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
+        <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.3" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.14"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

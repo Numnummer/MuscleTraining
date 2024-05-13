@@ -47,4 +47,14 @@ public class User: IdentityUser<Guid>, IEntity
     /// Тренировки
     /// </summary>
     public List<Training>? Trainings { get; set; }
+    
+    /// <summary>
+    /// ОТправленные сообщения
+    /// </summary>
+    public List<Message>? SendedMessages { get; set; }
+    
+    /// <summary>
+    /// Принятые сообщения
+    /// </summary>
+    public List<Message>? RecievedMessages { get; set; }
 }
