@@ -34,9 +34,5 @@ public static class WebApplicationExtensions
     /// <param name="app">хост</param>
     public static void ConfigureSignalR(this WebApplication app)
     {
-        app.UseEndpoints(e =>
-        {
-            e.MapHub<NotificationHub>("/notification");
-        });
     }
 }

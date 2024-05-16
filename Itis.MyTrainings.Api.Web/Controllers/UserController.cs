@@ -17,6 +17,7 @@ using Itis.MyTrainings.Api.Core.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Core.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Web.Attributes;
 using MediatR;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ public class UserController : BaseController
 {
     private readonly IVkService _vkService;
     private readonly IYandexService _yandexService;
+    private readonly IUserService _userService;
 
     /// <summary>
     /// Конструктор
@@ -37,10 +39,11 @@ public class UserController : BaseController
     /// <param name="yandexService">Сервис для работы с Яндекс</param>
     public UserController(
         IVkService vkService,
-        IYandexService yandexService)
+        IYandexService yandexService, IUserService userService)
     {
         _vkService = vkService;
         _yandexService = yandexService;
+        _userService = userService;
     }
 
     /// <summary>
@@ -126,6 +129,19 @@ public class UserController : BaseController
                 Password = request.Password,
                 Code = request.Code,
             }, cancellationToken);
+    
+    /// <summary>
+    /// Получить информацию о текущем пользователе
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("currentRole")]
+    [Policy(PolicyConstants.IsDefaultUser)]
+    public async Task<string> GetCurrentRole()
+    {
+        var current = CurrentUserId;
+        var user = await _userService.FindUserByIdAsync(CurrentUserId);
+        return (await _userService.GetRoleAsync(user))!;
+    }
 
     /// <summary>
     /// Получить информацию о текущем пользователе

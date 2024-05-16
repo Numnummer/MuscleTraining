@@ -1,5 +1,6 @@
 using Itis.MyTrainings.Api.Web.Constants;
 using Itis.MyTrainings.Api.Web.Extensions;
+using Itis.MyTrainings.Api.Web.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,17 +13,19 @@ var app = builder.Build();
 
 app.UseRouting();
 app.UseHttpsRedirection();
-app.ConfigureSignalR();
 app.UseExceptionHandling();
 app.UseCors(SpecificOrigins.MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
+app.ConfigureSignalR();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<NotificationHub>("/notification");
 
 await app.MigrateDbAsync();
 

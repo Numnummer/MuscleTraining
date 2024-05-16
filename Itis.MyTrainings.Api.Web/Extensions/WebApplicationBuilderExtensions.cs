@@ -79,10 +79,11 @@ public static class WebApplicationBuilderExtensions
             options.AddPolicy(name: SpecificOrigins.MyAllowSpecificOrigins, 
                 builder =>
                 {
-                    builder.AllowAnyMethod()
+                    builder
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowAnyOrigin()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                        .AllowCredentials();
                 });
         });
     }

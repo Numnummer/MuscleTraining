@@ -17,33 +17,19 @@ public class NotificationHub : Hub
         _userService = userService;
         _dbContext = dbContext;
     }
-
-    public override async Task OnConnectedAsync()
-    {
-        await Groups.AddToGroupAsync(Context.ConnectionId, Context.User!.Identity!.Name!);
-        await base.OnConnectedAsync();
-    }
-
-    public override async Task OnDisconnectedAsync(Exception exception)
-    {
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.User!.Identity!.Name!);
-        await base.OnDisconnectedAsync(exception);
-    }
     
-    public async Task SendMessage(string messageText, string recieverUsername)
+    public async Task SendMessage(string messageText)
     {
-        var coachId = await _userService.GetCurrentUserId();
-
-        var coach = await _userService.FindUserByIdAsync(coachId);
-
-        var reciever = await _userService.FindUserByUserNameAsync(recieverUsername);
-
-        var message = new Message(DateTime.Now, messageText, coach, reciever);
-        _dbContext.Messages.Add(message);
-
-        await Clients.Group(reciever.Id.ToString()).SendAsync("RecieveMessage", message.SendDate,
-            $"{coach.FirstName} {coach.LastName}", messageText);
-
-        await _dbContext.SaveChangesAsync();
+        // var coach = await _userService.FindUserByIdAsync(currentUserId);
+        //
+        // var message = new Message(DateTime.Now, messageText, coach, coach);
+        // _dbContext.Messages.Add(message);
+        //
+        // await Clients.All.SendAsync("ReceieveMessage", message.SendDate,
+        //     $"{coach.FirstName} {coach.LastName}", messageText);
+        //
+        // await _dbContext.SaveChangesAsync();
+        
+        await Clients.All.SendAsync("ReceiveMessage", DateTime.Now, $"qweqwe qweqweq", messageText);
     }
 }

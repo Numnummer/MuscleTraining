@@ -3,6 +3,7 @@ using Itis.MyTrainings.Api.Core.Constants;
 using Itis.MyTrainings.Api.Core.Requests.Message.GetMessages;
 using Itis.MyTrainings.Api.Web.Attributes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
@@ -10,6 +11,7 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 /// <summary>
 /// Контроллер сущности "Сообщения"
 /// </summary>
+[Authorize]
 public class MessageController : BaseController
 {
     /// <summary>

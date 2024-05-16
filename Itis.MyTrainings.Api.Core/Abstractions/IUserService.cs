@@ -55,12 +55,6 @@ public interface IUserService
     public Task<IList<Claim>> GetClaimsAsync(User user);
 
     /// <summary>
-    /// Получить Id текущего пользователя
-    /// </summary>
-    /// <returns>Id текущего пользователя</returns>
-    public Task<Guid> GetCurrentUserId();
-
-    /// <summary>
     /// Получить роль пользователя
     /// </summary>
     /// <param name="user">Пользователь</param>

@@ -74,15 +74,6 @@ public class UserService: IUserService
         => await _signInManager.PasswordSignInAsync(user, password, false, false);
 
     /// <inheritdoc />
-    public Task<Guid> GetCurrentUserId()
-    {
-        var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-        return Task.FromResult(Guid.TryParse(currentUserId?.Value, out var result)
-            ? result
-            : throw new NotFoundException("Текущий пользователь не найден"));
-    }
-
-    /// <inheritdoc />
     public async Task SignOutAsync()
         => await _signInManager.SignOutAsync();
 
