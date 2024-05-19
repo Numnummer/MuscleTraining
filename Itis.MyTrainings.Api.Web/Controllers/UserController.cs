@@ -17,7 +17,6 @@ using Itis.MyTrainings.Api.Core.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Core.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Web.Attributes;
 using MediatR;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 

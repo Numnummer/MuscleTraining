@@ -1,5 +1,4 @@
 ﻿using Itis.MyTrainings.Api.Core.Abstractions;
-using Itis.MyTrainings.Api.Core.Entities;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Itis.MyTrainings.Api.Web.SignalR;
@@ -7,7 +6,7 @@ namespace Itis.MyTrainings.Api.Web.SignalR;
 /// <summary>
 /// Хаб для сообщений
 /// </summary>
-public class NotificationHub : Hub
+public class NotificationHub : Hub<INotificationClient>
 {
     private IUserService _userService;
     private IDbContext _dbContext;
@@ -18,7 +17,7 @@ public class NotificationHub : Hub
         _dbContext = dbContext;
     }
     
-    public async Task SendMessage(string messageText)
+    public async Task SendMessage()
     {
         // var coach = await _userService.FindUserByIdAsync(currentUserId);
         //
@@ -30,6 +29,13 @@ public class NotificationHub : Hub
         //
         // await _dbContext.SaveChangesAsync();
         
-        await Clients.All.SendAsync("ReceiveMessage", DateTime.Now, $"qweqwe qweqweq", messageText);
+        await Clients.All.ReceiveMessage(new NotificationModel(DateTime.Now, "Coach", "Сообщение"));
     }
 }
+
+public interface INotificationClient
+{
+    public Task ReceiveMessage(NotificationModel model);
+}
+
+public record NotificationModel(DateTime CreatedDate, string From, string Message);

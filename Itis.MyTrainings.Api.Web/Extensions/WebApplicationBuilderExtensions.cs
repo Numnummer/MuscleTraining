@@ -56,7 +56,6 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddScoped<IVkService, VkService>();
         builder.Services.AddScoped<IYandexService, YandexService>();
         builder.Services.AddSingleton<IHttpHelperService, HttpHelperService>();
-        builder.Services.AddSignalR();
         builder.Services
             .AddIdentity<User, Role>(opt =>
             {
@@ -80,12 +79,13 @@ public static class WebApplicationBuilderExtensions
                 builder =>
                 {
                     builder
-                        .WithOrigins("http://localhost:5173")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowCredentials();
+                        .AllowAnyOrigin()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
                 });
         });
+        builder.Services.AddSignalR();
     }
 
     /// <summary>

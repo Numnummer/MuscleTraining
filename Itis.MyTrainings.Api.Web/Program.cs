@@ -25,10 +25,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHub<NotificationHub>("/notification");
 
 await app.MigrateDbAsync();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/notification");
 
 app.Run();
