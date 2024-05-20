@@ -79,9 +79,9 @@ public static class WebApplicationBuilderExtensions
                 builder =>
                 {
                     builder
+                        .WithOrigins("http://localhost:5173")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowAnyOrigin()
                         .SetIsOriginAllowedToAllowWildcardSubdomains();
                 });
         });
