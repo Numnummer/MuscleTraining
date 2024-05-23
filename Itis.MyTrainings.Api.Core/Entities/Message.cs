@@ -20,12 +20,10 @@ public class Message : EntityBase
     public Message(
         DateTime sendDate,
         string messageText,
-        User sender,
-        User reciever)
+        Guid sender)
     {
         SendDate = sendDate;
-        Reciever = reciever;
-        Sender = sender;
+        SenderId = sender;
         MessageText = messageText;
     }
 

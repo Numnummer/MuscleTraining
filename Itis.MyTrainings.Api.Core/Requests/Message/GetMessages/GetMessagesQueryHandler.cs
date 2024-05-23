@@ -32,7 +32,6 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GetMess
             ?? throw new EntityNotFoundException<Entities.User>(request.UserId);
 
         var result = await _dbContext.Messages
-            .Where(x => x.RecieverId == request.UserId)
             .Select(x => new GetMessagesResponseItem()
             {
                 MesssageText = x.MessageText,
