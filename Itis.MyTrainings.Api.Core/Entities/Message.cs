@@ -8,7 +8,6 @@ namespace Itis.MyTrainings.Api.Core.Entities;
 public class Message : EntityBase
 {
     private User _sender;
-    private User _reciever;
     
     /// <summary>
     /// Конструктор
@@ -16,7 +15,6 @@ public class Message : EntityBase
     /// <param name="sendDate">Дата отправки</param>
     /// <param name="messageText">Текст сообщения</param>
     /// <param name="sender">Отправитель</param>
-    /// <param name="reciever">Получатель</param>
     public Message(
         DateTime sendDate,
         string messageText,
@@ -47,11 +45,6 @@ public class Message : EntityBase
     public Guid SenderId { get; set; }
     
     /// <summary>
-    /// Id получателя
-    /// </summary>
-    public Guid RecieverId { get; set; }
-
-    /// <summary>
     /// Отправитель
     /// </summary>
     public User Sender
@@ -62,20 +55,6 @@ public class Message : EntityBase
             _sender = value 
                       ?? throw new RequiredFieldIsEmpty("Отправитель");
             SenderId = value.Id;
-        }
-    }
-    
-    /// <summary>
-    /// Получатель
-    /// </summary>
-    public User Reciever     
-    {
-        get => _reciever;
-        set
-        {
-            _reciever = value 
-                        ?? throw new RequiredFieldIsEmpty("Получатель");
-            RecieverId = value.Id;
         }
     }
 }

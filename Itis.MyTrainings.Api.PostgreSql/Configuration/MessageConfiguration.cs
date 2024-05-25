@@ -18,9 +18,6 @@ internal class MessageConfiguration : EntityBaseConfiguration<Message>
         builder.Property(p => p.MessageText)
             .HasComment("Текст сообщения");
         
-        builder.Property(p => p.RecieverId)
-            .HasComment("Id поулчателя");
-        
         builder.Property(p => p.SenderId)
             .HasComment("Id отправителя");
         
@@ -30,11 +27,6 @@ internal class MessageConfiguration : EntityBaseConfiguration<Message>
         builder.HasOne(x => x.Sender)
             .WithMany(x => x.SendedMessages)
             .HasForeignKey(x => x.SenderId)
-            .HasPrincipalKey(x => x.Id);
-        
-        builder.HasOne(x => x.Reciever)
-            .WithMany(x => x.RecievedMessages)
-            .HasForeignKey(x => x.RecieverId)
             .HasPrincipalKey(x => x.Id);
     }
 }

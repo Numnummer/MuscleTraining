@@ -26,7 +26,7 @@ public class NotificationHub : Hub<INotificationClient>
         var coach = await _userService.FindUserByIdAsync(currentUserId)
             ?? throw new ApplicationExceptionBase($"Не найден тренер с id: {currentUserId}");
         
-        var message = new Message(DateTime.Now, messageText, currentUserId);
+        var message = new Message(DateTime.Now, messageText, coach.Id);
         _dbContext.Messages.Add(message);
         
         await Clients.All.ReceiveMessage(

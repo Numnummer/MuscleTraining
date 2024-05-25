@@ -9,7 +9,6 @@ builder.ConfigureJwtBearer();
 builder.ConfigurePostgresqlConnection();
 builder.Services.AddCors();
 
-
 var app = builder.Build();
 
 app.UseRouting();
@@ -30,7 +29,7 @@ app.UseCors(option =>
 {
     option.AllowAnyHeader();
     option.AllowAnyMethod();
-    option.AllowAnyOrigin();
+    option.AllowCredentials();
     option.SetIsOriginAllowed(origin => true);
 });
 
