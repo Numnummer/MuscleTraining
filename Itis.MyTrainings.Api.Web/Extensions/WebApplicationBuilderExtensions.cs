@@ -5,7 +5,6 @@ using Itis.MyTrainings.Api.Core.Entities;
 using Itis.MyTrainings.Api.Core.Services;
 using Itis.MyTrainings.Api.PostgreSql;
 using Itis.MyTrainings.Api.Web.Configurators;
-using Itis.MyTrainings.Api.Web.Constants;
 using Itis.MyTrainings.Api.Web.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -73,18 +72,6 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddCustomSwagger();
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(name: SpecificOrigins.MyAllowSpecificOrigins, 
-                builder =>
-                {
-                    builder
-                        .WithOrigins("http://localhost:5173")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains();
-                });
-        });
         builder.Services.AddSignalR();
     }
 

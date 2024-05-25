@@ -1,6 +1,7 @@
 ﻿using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Entities;
 using Itis.MyTrainings.Api.Core.Exceptions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Itis.MyTrainings.Api.Web.SignalR;
@@ -8,6 +9,7 @@ namespace Itis.MyTrainings.Api.Web.SignalR;
 /// <summary>
 /// Хаб для сообщений
 /// </summary>
+[EnableCors]
 public class NotificationHub : Hub<INotificationClient>
 {
     private IUserService _userService;
