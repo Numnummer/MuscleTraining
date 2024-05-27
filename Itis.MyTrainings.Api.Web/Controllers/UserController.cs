@@ -3,6 +3,7 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.GetResetPasswordCode;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUser;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithVk;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithYandex;
+using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterWithGoogle;
 using Itis.MyTrainings.Api.Contracts.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Contracts.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Core.Abstractions;
@@ -13,6 +14,7 @@ using Itis.MyTrainings.Api.Core.Requests.User.GetResetPasswordCode;
 using Itis.MyTrainings.Api.Core.Requests.User.RegisterUser;
 using Itis.MyTrainings.Api.Core.Requests.User.RegisterUserWithVk;
 using Itis.MyTrainings.Api.Core.Requests.User.RegisterUserWithYandex;
+using Itis.MyTrainings.Api.Core.Requests.User.RegisterWithGoogle;
 using Itis.MyTrainings.Api.Core.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Core.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Web.Attributes;
@@ -171,7 +173,19 @@ public class UserController : BaseController
             Name = request.Name,
             Surname = request.Surname,
         });
-    
+
+    /// <summary>
+    /// Регистрация через гугл
+    /// </summary>
+    /// <param name="mediator">Медиатор CQRS</param>
+    /// <param name="token">Токен</param>
+    /// <param name="cancellationToken"></param>
+    [HttpPost("registerWithGoogle")]
+    public async Task<RegisterWithGoogleResponse> RegisterWithGoogleAsync(
+        [FromServices] IMediator mediator,
+        [FromQuery] string token,
+        CancellationToken cancellationToken)
+        => await mediator.Send(new RegisterWithGoogleCommand(token), cancellationToken);
 
     /// <summary>
     /// Получить ссылку для авторизации пользователя с помощью Яндекс.

@@ -36,6 +36,9 @@ internal class UserConfiguration: IEntityTypeConfiguration<User>
         
         builder.Property(p => p.Email)
             .HasComment("Почта");
+        
+        builder.Property(p => p.RegisteredWithGoogle)
+            .HasComment("Зарегистрирован через Google");
 
         builder.HasOne(x => x.UserProfile)
             .WithOne(x => x.User)

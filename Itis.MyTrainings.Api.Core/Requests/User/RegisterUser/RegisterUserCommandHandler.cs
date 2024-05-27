@@ -53,7 +53,8 @@ public class RegisterUserCommandHandler
             UserName = request.UserName,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Email = request.Email
+            Email = request.Email,
+            RegisteredWithGoogle = false
         };
         
         var result = await _userService.RegisterUserAsync(user, request.Password);

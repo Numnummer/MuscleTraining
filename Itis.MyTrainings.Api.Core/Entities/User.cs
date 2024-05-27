@@ -21,6 +21,11 @@ public class User: IdentityUser<Guid>, IEntity
     public string LastName { get; set; } = default!;
 
     /// <summary>
+    /// Зарегистрирован через Google
+    /// </summary>
+    public bool RegisteredWithGoogle { get; set; }
+
+    /// <summary>
     /// Идентификатор профиля пользователя
     /// </summary>
     public Guid? UserProfileId { get; set; }

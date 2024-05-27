@@ -10,7 +10,7 @@ namespace Itis.MyTrainings.Api.Core.Abstractions;
 public interface IUserService
 {
     /// <summary>
-    /// Зарегестрировать пользователя
+    /// Зарегистрировать пользователя
     /// </summary>
     /// <param name="user">Пользователь</param>
     /// <param name="password">Пароль</param>
@@ -18,7 +18,14 @@ public interface IUserService
     public Task<IdentityResult> RegisterUserAsync(User user, string password);
 
     /// <summary>
-    /// Зарегестрировать пользователя
+    /// Регистрация пользователя без пароля
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public Task<IdentityResult> RegisterUserWithoutPassword(User user);
+
+    /// <summary>
+    /// Зарегистрировать пользователя
     /// </summary>
     /// <param name="user">Пользователь</param>
     /// <returns></returns>
@@ -75,6 +82,14 @@ public interface IUserService
     /// <param name="password">Пароль</param>
     /// <returns></returns>
     public Task<SignInResult> SignInWithPasswordAsync(User user, string password);
+
+    /// <summary>
+    /// Войти без пароля
+    /// </summary>
+    /// <param name="user">Пользователь</param>
+    /// <param name="password">Пароль</param>
+    /// <returns></returns>
+    public Task SignInWithoutPasswordAsync(User user);
 
     /// <summary>
     /// Выйти

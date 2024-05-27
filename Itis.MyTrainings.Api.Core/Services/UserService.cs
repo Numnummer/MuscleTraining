@@ -43,6 +43,10 @@ public class UserService: IUserService
         => await _userManager.CreateAsync(user, password);
 
     /// <inheritdoc />
+    public async Task<IdentityResult> RegisterUserWithoutPassword(User user)
+        => await _userManager.CreateAsync(user);
+
+    /// <inheritdoc />
     public async Task<IdentityResult> RegisterUserAsync(User user)
         => await _userManager.CreateAsync(user);
 
@@ -72,6 +76,10 @@ public class UserService: IUserService
     /// <inheritdoc />
     public async Task<SignInResult> SignInWithPasswordAsync(User user, string password)
         => await _signInManager.PasswordSignInAsync(user, password, false, false);
+
+    /// <inheritdoc />
+    public async Task SignInWithoutPasswordAsync(User user)
+        => await _signInManager.SignInAsync(user, false);
 
     /// <inheritdoc />
     public async Task SignOutAsync()
