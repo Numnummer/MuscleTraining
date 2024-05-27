@@ -47,6 +47,8 @@ public class UserProfileController : BaseController
         => await mediator.Send(
             new PostUserProfileCommand(CurrentUserId)
             {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 Gender = request.Gender,
                 DateOfBirth = request.DateOfBirth,
                 PhoneNumber = request.PhoneNumber,
@@ -69,6 +71,8 @@ public class UserProfileController : BaseController
         CancellationToken cancellationToken)
         => await mediator.Send(new PutUserProfileCommand(CurrentUserId)
         {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
             Gender = request.Gender,
             DateOfBirth = request.DateOfBirth,
             PhoneNumber = request.PhoneNumber,

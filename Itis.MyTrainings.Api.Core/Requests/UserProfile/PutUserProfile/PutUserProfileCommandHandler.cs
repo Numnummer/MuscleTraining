@@ -26,6 +26,9 @@ public class PutUserProfileCommandHandler: IRequestHandler<PutUserProfileCommand
     /// <inheritdoc />
     public async Task<PutUserProfileResponse> Handle(PutUserProfileCommand request, CancellationToken cancellationToken)
     {
+        var user = await _userService.FindUserByIdAsync(request.UserId)
+            ?? throw new EntityNotFoundException<Entities.User>(request.UserId);
+        
         var userProfile = await _userService.FindUserProfileByUserId(request.UserId, cancellationToken)
             ?? throw new EntityNotFoundException<Entities.UserProfile>("Не найден профиль для данного пользователя");
 
@@ -34,7 +37,12 @@ public class PutUserProfileCommandHandler: IRequestHandler<PutUserProfileCommand
         userProfile.DateOfBirth = request.DateOfBirth;
         userProfile.Height = request.Height;
         userProfile.Weight = request.Weight;
-    
+
+        user.FirstName = request.FirstName;
+        user.LastName = request.LastName;
+
+        await _userService.UpdateUserAsync(user);
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new PutUserProfileResponse(userProfile.Id);

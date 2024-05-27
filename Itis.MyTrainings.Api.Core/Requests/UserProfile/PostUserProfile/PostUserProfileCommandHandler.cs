@@ -37,6 +37,9 @@ public class PostUserProfileCommandHandler: IRequestHandler<PostUserProfileComma
 
         if (user.UserProfileId.HasValue)
             throw new ValidationException("Профиль пользователя уже создан");
+
+        user.FirstName = request.FirstName;
+        user.LastName = request.LastName;
         
         var userProfile = new Entities.UserProfile
         {

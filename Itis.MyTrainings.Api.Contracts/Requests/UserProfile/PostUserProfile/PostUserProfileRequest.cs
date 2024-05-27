@@ -9,6 +9,16 @@ namespace Itis.MyTrainings.Api.Contracts.Requests.UserProfile.PostUserProfile;
 public class PostUserProfileRequest
 {
     /// <summary>
+    /// Имя
+    /// </summary>
+    public string FirstName { get; set; }
+
+    /// <summary>
+    /// Фамилия
+    /// </summary>
+    public string LastName { get; set; }
+    
+    /// <summary>
     /// Пол
     /// </summary>
     public Genders? Gender { get; set; }
