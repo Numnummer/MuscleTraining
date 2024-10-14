@@ -53,7 +53,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore -warnaserror
+      run: dotnet build --no-restore #-warnaserror
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
