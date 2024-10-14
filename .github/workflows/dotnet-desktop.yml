@@ -53,7 +53,12 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore   
+      run: dotnet build --no-restore  
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages:  'csharp'
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
