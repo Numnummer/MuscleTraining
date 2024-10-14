@@ -55,8 +55,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore   
 
-    - name: CodeQL analysis
-      uses: actions/reusable-workflows/.github/workflows/codeql-analysis.yml@main
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:csharp"
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
