@@ -53,17 +53,18 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore  
+      run: dotnet build --no-restore -warnaserror
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages:  'csharp'
 
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:csharp"
+      uses: github/codeql-action/analyze@v3
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
