@@ -7,6 +7,7 @@ builder.ConfigureCore();
 builder.ConfigureAuthorization();
 builder.ConfigureJwtBearer();
 builder.ConfigurePostgresqlConnection();
+builder.Services.AddSignalR();
 builder.Services.AddCors();
 
 var app = builder.Build();
@@ -25,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHub<NotificationHub>("/notification");
+app.MapHub<SupportChatHub>("/supportChat");
+
 app.UseCors(option =>
 {
     option.AllowAnyHeader();
