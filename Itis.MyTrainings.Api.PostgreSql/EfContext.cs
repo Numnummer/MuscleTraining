@@ -1,5 +1,6 @@
 ﻿using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Entities;
+using Itis.MyTrainings.Api.Core.Entities.SupportChat;
 using Itis.MyTrainings.Api.PostgreSql.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -47,4 +48,6 @@ public class EfContext: IdentityDbContext<User, Role, Guid>, IDbContext
     
     /// <inheritdoc />
     public DbSet<Message> Messages { get; set; }
+    
+    public DbSet<ChatMessage> ChatMessages { get; set; }
 }

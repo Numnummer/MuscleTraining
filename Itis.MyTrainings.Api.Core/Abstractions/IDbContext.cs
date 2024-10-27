@@ -1,4 +1,5 @@
 ﻿using Itis.MyTrainings.Api.Core.Entities;
+using Itis.MyTrainings.Api.Core.Entities.SupportChat;
 using Microsoft.EntityFrameworkCore;
 
 namespace Itis.MyTrainings.Api.Core.Abstractions;
@@ -27,6 +28,8 @@ public interface IDbContext
     /// Сообщения
     /// </summary>
     DbSet<Message> Messages { get; set; }
+    
+    DbSet<ChatMessage> ChatMessages { get; set; }
     
     /// <summary>
     /// Сохранить изменения в БД
