@@ -1,3 +1,4 @@
+using System.Reflection;
 using Itis.MyTrainings.Api.Web.Extensions;
 using Itis.MyTrainings.Api.Web.Masstransit.Consumers;
 using Itis.MyTrainings.Api.Web.SignalR;
@@ -18,11 +19,13 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ChatHistoryRecordConsumer>();
+    
     x.UsingInMemory((context, cfg) =>
     {
         cfg.ConfigureEndpoints(context);
     });
 });
+builder.Services.AddMassTransitHostedService();
 builder.Services.AddCors();
 
 var app = builder.Build();

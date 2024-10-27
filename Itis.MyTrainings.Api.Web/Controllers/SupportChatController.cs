@@ -14,15 +14,15 @@ namespace Itis.MyTrainings.Api.Web.Controllers;
 public class SupportChatController : BaseController
 {
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet]
+    [HttpGet("multicast/{group}")]
     public async Task<LoadChatHistoryResponse[]> LoadMulticastChatHistoryAsync(
-        [FromServices] IMediator mediator, [FromBody] LoadMulticastChatHistoryQuery request) =>
-        await mediator.Send(request);
+        [FromServices] IMediator mediator, string group) =>
+        await mediator.Send(new LoadMulticastChatHistoryQuery(group));
     
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet]
+    [HttpGet("unicast/{email}")]
     public async Task<LoadChatHistoryResponse[]> LoadUnicastChatHistoryAsync(
-        [FromServices] IMediator mediator, [FromBody] LoadUnicastChatHistoryQuery request) =>
-        await mediator.Send(request);
+        [FromServices] IMediator mediator, string email) =>
+        await mediator.Send(new LoadUnicastChatHistoryQuery(email));
 
 }

@@ -1,5 +1,5 @@
+using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Entities.SupportChat;
-using Itis.MyTrainings.Api.Core.Services;
 using MassTransit;
 
 namespace Itis.MyTrainings.Api.Web.Masstransit.Consumers;
@@ -9,9 +9,9 @@ namespace Itis.MyTrainings.Api.Web.Masstransit.Consumers;
 /// </summary>
 public class ChatHistoryRecordConsumer : IConsumer<ChatMessage>
 {
-    private readonly ChatHistoryRecordService _chatHistoryRecordService;
+    private readonly IChatHistoryRecordService _chatHistoryRecordService;
 
-    public ChatHistoryRecordConsumer(ChatHistoryRecordService chatHistoryRecordService)
+    public ChatHistoryRecordConsumer(IChatHistoryRecordService chatHistoryRecordService)
     {
         _chatHistoryRecordService = chatHistoryRecordService;
     }
