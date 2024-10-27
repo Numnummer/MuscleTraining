@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using System.Security.Claims;
+using Itis.MyTrainings.Api.Core.Entities.SupportChat;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,7 +16,14 @@ public class SupportChatHub : Hub
     private readonly string _usersRoom = "usersRoom";
     private readonly string _coachesRoom = "coachesRoom";
     private readonly string _adminsRoom = "adminsRoom";
-    
+
+    private readonly IBus _bus;
+
+    public SupportChatHub(IBus bus)
+    {
+        _bus = bus;
+    }
+
     // In-memory dictionary to store connectionId and email
     private static readonly ConcurrentDictionary<string, string> _connections = new ConcurrentDictionary<string, string>();
     
@@ -27,18 +36,32 @@ public class SupportChatHub : Hub
     public async Task SendMulticastMessageAsync(string author, string messageText, string destination)
     {
         var date = DateTime.Now;
+        var group = new Group();
         switch (destination)
         {
             case "Пользователь":
+                group = Group.Users;
                 await Clients.Group(_usersRoom).SendAsync("onMessageReceive", author, messageText, date);
                 break;
             case "Тренер":
+                group = Group.Coaches;  
                 await Clients.Group(_coachesRoom).SendAsync("onMessageReceive", author, messageText, date);
                 break;
             case "Админ":
+                group = Group.Admins;
                 await Clients.Group(_adminsRoom).SendAsync("onMessageReceive", author, messageText, date);
                 break;
         }
+
+        var message = new ChatMessage()
+        {
+            GroupName = group,
+            MessageText = messageText,
+            Id = new Guid(),
+            SendDate = date,
+            SenderEmail = author,
+        };
+        await _bus.Publish(message);
     }
     
     /// <summary>
@@ -48,9 +71,20 @@ public class SupportChatHub : Hub
     /// <param name="destination"></param>
     public async Task SendUnicastMessageAsync(string author ,string messageText, string email)
     {
+        var date = DateTime.Now;
         var connectionId = _connections.FirstOrDefault(x => x.Value == email).Key;
         await Clients.Client(connectionId)
-            .SendAsync("onMessageReceive", author, messageText, DateTime.Now);
+            .SendAsync("onMessageReceive", author, messageText, date);
+        
+        var message = new ChatMessage()
+        {
+            GroupName = null,
+            MessageText = messageText,
+            Id = new Guid(),
+            SendDate = date,
+            SenderEmail = author,
+        };
+        await _bus.Publish(message);
     }
 
     /// <summary>
