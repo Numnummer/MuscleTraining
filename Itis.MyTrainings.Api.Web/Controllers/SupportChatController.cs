@@ -20,9 +20,9 @@ public class SupportChatController : BaseController
         await mediator.Send(new LoadMulticastChatHistoryQuery(group));
     
     [Policy(PolicyConstants.IsDefaultUser)]
-    [HttpGet("unicast/{email}")]
+    [HttpGet("unicast/{firstEmail}/{secondEmail}")]
     public async Task<LoadChatHistoryResponse[]> LoadUnicastChatHistoryAsync(
-        [FromServices] IMediator mediator, string email) =>
-        await mediator.Send(new LoadUnicastChatHistoryQuery(email));
+        [FromServices] IMediator mediator, string firstEmail, string secondEmail) =>
+        await mediator.Send(new LoadUnicastChatHistoryQuery(firstEmail, secondEmail));
 
 }

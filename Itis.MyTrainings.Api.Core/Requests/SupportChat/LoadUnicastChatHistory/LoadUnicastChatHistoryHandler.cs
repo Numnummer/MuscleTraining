@@ -16,9 +16,13 @@ public class LoadUnicastChatHistoryHandler : IRequestHandler<LoadUnicastChatHist
     
     public async Task<LoadChatHistoryResponse[]> Handle(LoadUnicastChatHistoryQuery request, CancellationToken cancellationToken)
     {
-        return await _dbContext.ChatMessages
-            .Where(msg => msg.SenderEmail == request.Email)
-            .Select(msg => new LoadChatHistoryResponse(msg.MessageText, msg.SenderEmail, msg.SendDate))
+        return await _dbContext.UnicastChatMessages
+            .Where(msg =>
+                (msg.FromEmail == request.FirstEmail
+                 || msg.FromEmail == request.SecondEmail)
+                &&(msg.ToEmail == request.FirstEmail 
+                   || msg.ToEmail == request.SecondEmail))
+            .Select(msg => new LoadChatHistoryResponse(msg.MessageText, msg.FromEmail, msg.SendDate))
             .ToArrayAsync(cancellationToken);
     }
 }

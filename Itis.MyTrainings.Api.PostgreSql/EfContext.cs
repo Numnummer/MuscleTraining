@@ -32,7 +32,10 @@ public class EfContext: IdentityDbContext<User, Role, Guid>, IDbContext
         modelBuilder.Seed();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfContext).Assembly);
     }
-    
+
+    // <inheritdoc />
+    public DbSet<UnicastChatMessage> UnicastChatMessages { get; set; }
+
     /// <inheritdoc />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await SaveChangesAsync(true, cancellationToken);

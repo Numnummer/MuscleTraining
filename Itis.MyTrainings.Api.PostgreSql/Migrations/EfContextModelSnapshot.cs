@@ -146,6 +146,60 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.SupportChat.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_in(md5(random()::text || clock_timestamp()::text)::cstring)");
+
+                    b.Property<int?>("GroupName")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("SenderEmail")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.SupportChat.UnicastChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FromEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ToEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UnicastChatMessages");
+                });
+
             modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.Training", b =>
                 {
                     b.Property<Guid>("Id")

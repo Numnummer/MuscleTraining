@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Reflection.Metadata;
 using Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
 using Itis.MyTrainings.Api.Core.Abstractions;
@@ -20,15 +21,13 @@ public class LoadMulticastChatHistoryHandler :
 
     public async Task<LoadChatHistoryResponse[]> Handle(LoadMulticastChatHistoryQuery request, CancellationToken cancellationToken)
     {
-        if (Enum.TryParse(typeof(Group), request.Group, true, out var group))
-        {
-            return await _dbContext.ChatMessages
-                .Where(msg => msg.GroupName == (Group)group)
-                .Select(msg=>
-                    new LoadChatHistoryResponse(msg.MessageText,msg.SenderEmail, msg.SendDate))
-                .ToArrayAsync(cancellationToken);
-        }
-
-        throw new EntityNotFoundException<ChatMessage>("Не найдено сообщение с такой группой");
+        if (!Enum.TryParse(typeof(Group), request.Group, true, out var group))
+            throw new InvalidEnumArgumentException($"Не найдено сообщение с группой {request.Group}");
+        
+        return await _dbContext.ChatMessages
+            .Where(msg => msg.GroupName == (Group)group)
+            .Select(msg=>
+                new LoadChatHistoryResponse(msg.MessageText,msg.SenderEmail, msg.SendDate))
+            .ToArrayAsync(cancellationToken);
     }
 }

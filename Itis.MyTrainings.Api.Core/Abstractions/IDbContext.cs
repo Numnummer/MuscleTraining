@@ -31,6 +31,8 @@ public interface IDbContext
     
     DbSet<ChatMessage> ChatMessages { get; set; }
     
+    DbSet<UnicastChatMessage> UnicastChatMessages { get; set; }
+    
     /// <summary>
     /// Сохранить изменения в БД
     /// </summary>

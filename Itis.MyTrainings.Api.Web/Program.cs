@@ -19,6 +19,7 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ChatHistoryRecordConsumer>();
+    x.AddConsumer<UnicastChatHistoryRecordConsumer>();
     
     x.UsingInMemory((context, cfg) =>
     {

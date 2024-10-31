@@ -5,10 +5,12 @@ namespace Itis.MyTrainings.Api.Core.Requests.SupportChat.LoadUnicastChatHistory;
 
 public class LoadUnicastChatHistoryQuery : IRequest<LoadChatHistoryResponse[]>
 {
-    public LoadUnicastChatHistoryQuery(string email)
+    public LoadUnicastChatHistoryQuery(string firstEmail, string secondEmail)
     {
-        Email = email ?? throw new ArgumentNullException(nameof(email));
+        FirstEmail = firstEmail ?? throw new ArgumentNullException(nameof(firstEmail));
+        SecondEmail = secondEmail ?? throw new ArgumentNullException(nameof(secondEmail));
     }
 
-    public string Email { get; set; }
+    public string FirstEmail { get; set; }
+    public string SecondEmail { get; set; }
 }

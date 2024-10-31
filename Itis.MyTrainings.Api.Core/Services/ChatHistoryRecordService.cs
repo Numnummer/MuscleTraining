@@ -16,5 +16,12 @@ public class ChatHistoryRecordService : IChatHistoryRecordService
     public async Task RecordMessage(ChatMessage message)
     {
         await _dbContext.ChatMessages.AddAsync(message);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task RecordUnicastMessage(UnicastChatMessage message)
+    {
+        await _dbContext.UnicastChatMessages.AddAsync(message);
+        await _dbContext.SaveChangesAsync();
     }
 }
