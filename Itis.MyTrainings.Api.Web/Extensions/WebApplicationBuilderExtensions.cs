@@ -54,6 +54,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddSingleton<IEmailSenderService, EmailSenderService>();
         builder.Services.AddScoped<IVkService, VkService>();
         builder.Services.AddScoped<IYandexService, YandexService>();
+        builder.Services.AddScoped<IChatHistoryRecordService, ChatHistoryRecordService>();
         builder.Services.AddSingleton<IHttpHelperService, HttpHelperService>();
         builder.Services
             .AddIdentity<User, Role>(opt =>
@@ -72,7 +73,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddCustomSwagger();
-        builder.Services.AddSignalR();
+        //builder.Services.AddSignalR();
     }
 
     /// <summary>
@@ -119,6 +120,19 @@ public static class WebApplicationBuilderExtensions
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuerSigningKey = true,
+                };  
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var path = context.Request.Path;
+                        var accessToken = context.Request.Query["id"];
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            context.Request.Headers.Add("Authorization", new[] { $"Bearer {accessToken}" });
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
     }

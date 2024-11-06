@@ -139,7 +139,7 @@ public class UserController : BaseController
     [Policy(PolicyConstants.IsDefaultUser)]
     public async Task<string> GetCurrentRole()
     {
-        var current = CurrentUserId;
+        var context=HttpContext;
         var user = await _userService.FindUserByIdAsync(CurrentUserId);
         return (await _userService.GetRoleAsync(user))!;
     }

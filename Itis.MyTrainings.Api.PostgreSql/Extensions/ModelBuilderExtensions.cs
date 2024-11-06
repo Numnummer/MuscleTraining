@@ -1,6 +1,4 @@
-﻿using Itis.MyTrainings.Api.Core.Entities;
-using Itis.MyTrainings.Api.Core.Managers;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Itis.MyTrainings.Api.PostgreSql.Extensions;

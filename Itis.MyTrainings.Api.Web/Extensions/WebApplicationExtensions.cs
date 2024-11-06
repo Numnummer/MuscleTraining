@@ -34,5 +34,6 @@ public static class WebApplicationExtensions
     /// <param name="app">хост</param>
     public static void ConfigureSignalR(this WebApplication app)
     {
+        
     }
 }
