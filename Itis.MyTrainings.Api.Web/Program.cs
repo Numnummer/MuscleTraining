@@ -56,6 +56,7 @@ app.UseCors(option =>
 });
 
 await app.MigrateDbAsync();
+app.MapHealthChecks("health");
 
 app.MapControllers();
 app.MapHub<SupportChatHub>("/supportChat");

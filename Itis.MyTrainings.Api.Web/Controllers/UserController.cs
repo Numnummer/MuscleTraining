@@ -1,4 +1,5 @@
-﻿using Itis.MyTrainings.Api.Contracts.Requests.User.GetCurrentUserInfo;
+﻿using System.Security.Claims;
+using Itis.MyTrainings.Api.Contracts.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Contracts.Requests.User.GetResetPasswordCode;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUser;
 using Itis.MyTrainings.Api.Contracts.Requests.User.RegisterUserWithVk;
@@ -8,6 +9,7 @@ using Itis.MyTrainings.Api.Contracts.Requests.User.ResetPassword;
 using Itis.MyTrainings.Api.Contracts.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Core.Constants;
+using Itis.MyTrainings.Api.Core.Entities;
 using Itis.MyTrainings.Api.Core.Requests.User.CheckUserProfile;
 using Itis.MyTrainings.Api.Core.Requests.User.GetCurrentUserInfo;
 using Itis.MyTrainings.Api.Core.Requests.User.GetResetPasswordCode;
@@ -20,6 +22,7 @@ using Itis.MyTrainings.Api.Core.Requests.User.SignIn;
 using Itis.MyTrainings.Api.Web.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
@@ -219,4 +222,29 @@ public class UserController : BaseController
         [FromServices] IMediator mediator,
         CancellationToken cancellationToken)
         => await mediator.Send(new CheckUserProfileQuery(CurrentUserId), cancellationToken);
+
+    [Obsolete]
+    [HttpGet("addAdminn")]
+    public async Task AddAdmin([FromServices] UserManager<User> userManager)
+    {
+        var user = new User
+        {
+            UserName = "admin",
+            FirstName = "bigg",
+            LastName = "number",
+            Email = "admin@bigg.com",
+            RegisteredWithGoogle = false
+        };
+        var res=await userManager.CreateAsync(user, "addAdmin1");
+        if (res.Succeeded)
+        {
+            var claims = new List<Claim>
+            {
+                new (ClaimTypes.Role, "Administrator"),
+            };
+
+            await _userService.AddUserRoleAsync(user, "Administrator");
+            await _userService.AddClaimsAsync(user, claims);
+        }
+    }
 }
