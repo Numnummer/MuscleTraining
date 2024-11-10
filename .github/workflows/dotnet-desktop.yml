@@ -31,7 +31,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5432:5432
+          - 5433:5432      
 
     env:
       Solution_Name: Itis.MyTrainings.Api.sln                         
@@ -47,15 +47,17 @@ jobs:
     - name: Install .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 7.0.x
 
     - name: Restore dependencies
+      working-directory: ./Itis.MyTrainings.Api
       run: dotnet restore
       
     - name: Build
+      working-directory: ./Itis.MyTrainings.Api
       run: dotnet build --no-restore #-warnaserror
 
-    - name: Initialize CodeQL
+    - name: Initialize CodeQL      
       uses: github/codeql-action/init@v3
       with:
         languages:  'csharp'
@@ -68,6 +70,7 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
+      working-directory: ./Itis.MyTrainings.Api
       run: dotnet test             
 
     - name: Check for Warnings
@@ -79,4 +82,68 @@ jobs:
 
     - name: Fail if tests fail
       if: ${{ failure() }}
-      run: exit 1
+
+  chatService:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: "SupportChat"
+          POSTGRES_USER: "postgres"
+          POSTGRES_PASSWORD: "P@ssw0rd"
+          PGDATA: "/var/lib/postgresql/data/pgdata"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5434:5432      
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Restore dependencies
+      working-directory: ./Itis.MyTrainings.ChatHistoryService
+      run: dotnet restore
+      
+    - name: Build
+      working-directory: ./Itis.MyTrainings.ChatHistoryService
+      run: dotnet build --no-restore #-warnaserror
+
+    - name: Initialize CodeQL      
+      uses: github/codeql-action/init@v3
+      with:
+        languages:  'csharp'
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+
+    # Execute all unit tests in the solution
+    - name: Execute unit tests
+      working-directory: ./Itis.MyTrainings.ChatHistoryService
+      run: dotnet test             
+
+    - name: Check for Warnings
+      run: |
+        if grep -q "warning" build_output.log; then
+          echo "Warnings were found!"
+          exit 1
+        fi
+
+    - name: Fail if tests fail
+      if: ${{ failure() }}
+
