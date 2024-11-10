@@ -3,16 +3,19 @@ using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Enums;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Itis.MyTrainings.ChatHistoryService.PostgreSql.Repository;
 
 public class ChatHistoryRepository : IChatHistoryRepository
 {
     private readonly ServiceDbContext _dbContext;
+    private readonly ILogger<ChatHistoryRepository> _logger;
 
-    public ChatHistoryRepository(ServiceDbContext dbContext)
+    public ChatHistoryRepository(ServiceDbContext dbContext, ILogger<ChatHistoryRepository> logger)
     {
         _dbContext = dbContext;
+        _logger = logger;
     }
 
     public async Task<LoadChatHistoryResponse[]> LoadUnicastChatHistoryAsync(string firstEmail, string secondEmail)
@@ -49,5 +52,6 @@ public class ChatHistoryRepository : IChatHistoryRepository
     {
         await _dbContext.UnicastChatMessages.AddAsync(message);
         await _dbContext.SaveChangesAsync();
+        _logger.LogInformation("Unicast record");
     }
 }
