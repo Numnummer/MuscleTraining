@@ -1,6 +1,5 @@
-using Itis.MyTrainings.Api.Core.Abstractions;
-using Itis.MyTrainings.Api.Web.Masstransit.Consumers;
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
+using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Services;
 using Itis.MyTrainings.ChatHistoryService.Core.Services;
 using Itis.MyTrainings.ChatHistoryService.PostgreSql;
 using Itis.MyTrainings.ChatHistoryService.PostgreSql.Repository;
@@ -39,7 +38,7 @@ public static class WebAppBuilderExtentions
             
             bus.UsingRabbitMq((context, config) =>
             {
-                config.Host("localhost", "/", h =>
+                config.Host("rabbitmq", "/", h =>
                 {
                     h.Username(builder.Configuration["RabbitMQ:UserName"]);
                     h.Password(builder.Configuration["RabbitMQ:Password"]);

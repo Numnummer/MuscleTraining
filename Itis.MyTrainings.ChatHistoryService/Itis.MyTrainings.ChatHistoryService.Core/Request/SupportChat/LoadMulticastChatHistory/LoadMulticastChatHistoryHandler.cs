@@ -1,8 +1,7 @@
 using System.ComponentModel;
-using Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
-using Itis.MyTrainings.Api.Core.Requests.SupportChat;
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Enums;
+using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 using MediatR;
 
 namespace Itis.MyTrainings.ChatHistoryService.Core.Request.SupportChat.LoadMulticastChatHistory;

@@ -1,7 +1,7 @@
-using Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
+using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 using MediatR;
 
-namespace Itis.MyTrainings.Api.Core.Requests.SupportChat.LoadUnicastChatHistory;
+namespace Itis.MyTrainings.ChatHistoryService.Core.Request.SupportChat.LoadUnicastChatHistory;
 
 public class LoadUnicastChatHistoryQuery : IRequest<LoadChatHistoryResponse[]>
 {

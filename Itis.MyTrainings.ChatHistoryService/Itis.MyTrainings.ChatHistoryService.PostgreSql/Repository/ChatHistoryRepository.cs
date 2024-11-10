@@ -1,7 +1,7 @@
-using Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Enums;
+using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 using Microsoft.EntityFrameworkCore;
 
 namespace Itis.MyTrainings.ChatHistoryService.PostgreSql.Repository;

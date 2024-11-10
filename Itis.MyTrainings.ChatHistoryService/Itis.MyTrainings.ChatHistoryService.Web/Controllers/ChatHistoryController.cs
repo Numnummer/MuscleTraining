@@ -1,7 +1,6 @@
-
-using Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
-using Itis.MyTrainings.Api.Core.Requests.SupportChat;
-using Itis.MyTrainings.Api.Core.Requests.SupportChat.LoadUnicastChatHistory;
+using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
+using Itis.MyTrainings.ChatHistoryService.Core.Request.SupportChat.LoadMulticastChatHistory;
+using Itis.MyTrainings.ChatHistoryService.Core.Request.SupportChat.LoadUnicastChatHistory;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

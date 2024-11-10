@@ -1,5 +1,5 @@
-using Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities;
+using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 
 namespace Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
 

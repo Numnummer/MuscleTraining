@@ -1,5 +1,5 @@
-using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
+using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Services;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities;
 
 namespace Itis.MyTrainings.ChatHistoryService.Core.Services;

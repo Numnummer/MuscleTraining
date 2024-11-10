@@ -1,7 +1,6 @@
-﻿version: "1"
-services:
-  postgres:
-    container_name: postgres
+﻿services:
+  api-postgres:
+    container_name: api-postgres
     image: postgres:latest
     environment:
       POSTGRES_DB: "TicTacToe"
@@ -16,6 +15,22 @@ services:
       timeout: 30s
       retries: 3
 
+  chat-history-postgres:
+    container_name: chat-history-postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "SupportChat"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "P@ssw0rd"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - 5434:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
   frontend:
     build:
       context: ../../mouse-front/mouse-frontend-app
@@ -23,18 +38,47 @@ services:
     ports:
       - 5173:5173
     depends_on:
-      - backend #:
+      - main-api #:
         #condition: service_healthy
 
-  backend:
+  main-api:
     build:
-      context: ./
+      context: ./Itis.MyTrainings.Api
       dockerfile: Dockerfile
     ports:
       - 8080:80
     depends_on:
-      - postgres #:
-        #condition: service_healthy
+      api-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
+
+  chat-history-service:
+    build:
+      context: ./Itis.MyTrainings.ChatHistoryService
+      dockerfile: Dockerfile    
+    depends_on:
+      chat-history-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    environment:
+        RABBITMQ_DEFAULT_USER: big
+        RABBITMQ_DEFAULT_PASS: P@ssw0rd
+    ports:
+        - 5672:5672
+        - 15672:15672
+    healthcheck:
+          test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
       

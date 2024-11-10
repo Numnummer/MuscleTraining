@@ -1,4 +1,4 @@
-namespace Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
+namespace Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 
 public class LoadChatHistoryResponse
 {
