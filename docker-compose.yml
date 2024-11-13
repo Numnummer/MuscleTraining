@@ -47,6 +47,8 @@
       dockerfile: Dockerfile
     ports:
       - 8080:80
+    environment:
+      - API_KEY=asdasdasdasdasdasdaasda212
     depends_on:
       api-postgres:
         condition: service_started
@@ -59,6 +61,8 @@
     build:
       context: ./Itis.MyTrainings.ChatHistoryService
       dockerfile: Dockerfile    
+    environment:
+      - API_KEY=asdasdasdasdasdasdaasda212
     depends_on:
       chat-history-postgres:
         condition: service_started

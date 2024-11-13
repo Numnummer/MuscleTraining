@@ -24,6 +24,8 @@ public class SupportChatController : BaseController
     private async Task<LoadChatHistoryResponse[]> LoadChatHistory(string url)
     {
         var client=new HttpClient();
+        var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+        client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
         var response = await client.GetAsync(url);
         var json = await response.Content.ReadAsStringAsync();
         _logger.LogInformation(response.ToString());
