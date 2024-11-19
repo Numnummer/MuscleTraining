@@ -46,27 +46,27 @@ public class SupportChatHub : Hub
         {
             case "Пользователь Coach":
                 group = Group.UserCoach;
-                await Clients.Group(_userCoachRoom).SendAsync("onMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userCoachRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
                 break;
             case "Пользователь Administrator":
                 group = Group.UserAdmin;
-                await Clients.Group(_userAdminRoom).SendAsync("onMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
                 break;
             case "Тренер User":
                 group = Group.UserCoach;  
-                await Clients.Group(_userCoachRoom).SendAsync("onMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userCoachRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
                 break;
             case "Тренер Administrator":
                 group = Group.CoachAdmin;  
-                await Clients.Group(_coachAdminRoom).SendAsync("onMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_coachAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
                 break;
             case "Админ User":
                 group = Group.UserAdmin;
-                await Clients.Group(_userAdminRoom).SendAsync("onMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
                 break;
             case "Админ Coach":
                 group = Group.CoachAdmin;
-                await Clients.Group(_coachAdminRoom).SendAsync("onMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_coachAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
                 break;
         }
 
@@ -92,7 +92,7 @@ public class SupportChatHub : Hub
         var date = DateTime.Now;
         var connectionId = _connections.FirstOrDefault(x => x.Value == destination).Key;
         await Clients.Client(connectionId)
-            .SendAsync("onMessageReceive", author, messageText, date);
+            .SendAsync("onUnicastMessageReceive", author, messageText, date);
         
         var message = new UnicastChatMessage()
         {
