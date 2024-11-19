@@ -14,6 +14,8 @@
       interval: 30s
       timeout: 30s
       retries: 3
+    volumes:
+      - api-data:/var/lib/postgresql/data
 
   chat-history-postgres:
     container_name: chat-history-postgres
@@ -30,6 +32,8 @@
       interval: 30s
       timeout: 30s
       retries: 3
+    volumes:
+      - chat-data:/var/lib/postgresql/data
 
   frontend:
     build:
@@ -63,6 +67,8 @@
       dockerfile: Dockerfile    
     environment:
       - API_KEY=asdasdasdasdasdasdaasda212
+    ports:
+      - 8081:80
     depends_on:
       chat-history-postgres:
         condition: service_started
@@ -85,4 +91,8 @@
           interval: 10s
           timeout: 5s
           retries: 5
+
+volumes:
+  api-data:  
+  chat-data:
       
