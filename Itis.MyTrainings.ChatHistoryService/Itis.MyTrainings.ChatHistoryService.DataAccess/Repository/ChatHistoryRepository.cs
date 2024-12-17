@@ -1,4 +1,5 @@
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
+using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Services;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Enums;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
@@ -12,16 +13,18 @@ public class ChatHistoryRepository : IChatHistoryRepository
 {
     private readonly ServiceDbContext _dbContext;
     private readonly ILogger<ChatHistoryRepository> _logger;
+    private readonly IS3CommunicationService _s3CommunicationService;
 
-    public ChatHistoryRepository(ServiceDbContext dbContext, ILogger<ChatHistoryRepository> logger)
+    public ChatHistoryRepository(ServiceDbContext dbContext, ILogger<ChatHistoryRepository> logger, IS3CommunicationService s3CommunicationService)
     {
         _dbContext = dbContext;
         _logger = logger;
+        _s3CommunicationService = s3CommunicationService;
     }
 
     public async Task<LoadChatHistoryResponse[]> LoadUnicastChatHistoryAsync(string firstEmail, string secondEmail)
     {
-        return await _dbContext.UnicastChatMessages
+        var chatHistory= await _dbContext.UnicastChatMessages
             .Where(msg =>
                 (msg.FromEmail == firstEmail
                  || msg.FromEmail == secondEmail)
@@ -37,9 +40,11 @@ public class ChatHistoryRepository : IChatHistoryRepository
                 group.msg.MessageText,
                 group.msg.FromEmail,
                 group.msg.SendDate,
-                group.files.Where(f=>f.MessageId==group.msg.Id).ToArray()
-            ))
+                group.files.Where(f=>f.MessageId==group.msg.Id)
+                    .Select(f=>new FileModel(f.FileName,null))
+                    .ToArray()))
             .ToArrayAsync();
+        return await AddFilesContent(chatHistory);
     }
 
     public async Task<LoadChatHistoryResponse[]> LoadMulticastChatHistoryAsync(string groupString)
@@ -47,7 +52,7 @@ public class ChatHistoryRepository : IChatHistoryRepository
         if (!Enum.TryParse(typeof(Group), groupString, true, out var group))
             throw new ArgumentException($"Не найдено сообщение с группой {groupString}");
         
-        return await _dbContext.ChatMessages
+        var chatHistory = await _dbContext.ChatMessages
             .Where(msg => msg.GroupName == (Group)group)
             .GroupJoin(
                 _dbContext.MulticastFiles,
@@ -59,9 +64,25 @@ public class ChatHistoryRepository : IChatHistoryRepository
                 g.msg.MessageText,
                 g.msg.SenderEmail,
                 g.msg.SendDate,
-                g.files.Where(f=>f.MessageId==g.msg.Id).ToArray()
+                g.files.Where(f=>f.MessageId==g.msg.Id)
+                    .Select(f=>new FileModel(f.FileName,null))
+                    .ToArray()
             ))
             .ToArrayAsync();
+        return await AddFilesContent(chatHistory);
+    }
+
+    private async Task<LoadChatHistoryResponse[]> AddFilesContent(LoadChatHistoryResponse[] chatHistory)
+    {
+        var fileNames = chatHistory
+            .Select(c => c.Files
+                .Select(f=>f.FileName).ToArray()).ToArray();
+        var files = await _s3CommunicationService.GetFiles(fileNames);
+        return chatHistory.Select((c,i)=>new LoadChatHistoryResponse(
+            c.MessageText,
+            c.SenderEmail,
+            c.SentDateTime,
+            files[i])).ToArray();
     }
 
     public async Task RecordMessageAsync(ChatMessage message)

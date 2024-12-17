@@ -17,13 +17,13 @@ public class StorageController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
-    [HttpGet("/getFile/{fileName}")]
-    public async Task<FileModel> GetFileAsync(string fileName)
+    [HttpGet("/getFile")]
+    public async Task<FileModel[][]> GetFileAsync([FromQuery] string[][] filesName)
     {
-        return await mediator.Send(new GetFileRequest(fileName));
+        return await mediator.Send(new GetFileRequest(filesName));
     }
     
-    [HttpDelete("/deleteFile")]
+    [HttpPost("/deleteFile")]
     public async Task<IActionResult> DeleteFileAsync([FromBody] string[] fileName)
     {
         await mediator.Send(new DeleteFileRequest(fileName));

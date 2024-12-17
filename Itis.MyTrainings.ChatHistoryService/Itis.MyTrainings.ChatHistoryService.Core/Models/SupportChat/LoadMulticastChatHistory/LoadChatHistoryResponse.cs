@@ -5,7 +5,7 @@ namespace Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMultic
 
 public class LoadChatHistoryResponse
 {
-    public LoadChatHistoryResponse(string messageText, string senderEmail, DateTime sentDateTime, Files[] file)
+    public LoadChatHistoryResponse(string messageText, string senderEmail, DateTime sentDateTime, FileModel[] file)
     {
         MessageText = messageText ?? throw new ArgumentNullException(nameof(messageText));
         SenderEmail = senderEmail ?? throw new ArgumentNullException(nameof(senderEmail));
@@ -16,5 +16,5 @@ public class LoadChatHistoryResponse
     public string MessageText { get; set; }
     public string SenderEmail { get; set; }
     public DateTime SentDateTime { get; set; }
-    public Files[] Files { get; set; }
+    public FileModel[] Files { get; set; }
 }

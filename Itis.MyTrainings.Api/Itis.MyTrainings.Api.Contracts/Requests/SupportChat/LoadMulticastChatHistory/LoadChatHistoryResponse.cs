@@ -12,4 +12,7 @@ public class LoadChatHistoryResponse
     public string MessageText { get; set; }
     public string SenderEmail { get; set; }
     public DateTime SentDateTime { get; set; }
+    
+    public string[]? FileNames { get; set; }
+    public byte[][]? FilesContent { get; set; }
 }

@@ -1,6 +1,7 @@
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Services;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.S3Communication;
+using Itis.MyTrainings.ChatHistoryService.Core.Services;
 using Itis.MyTrainings.ChatHistoryService.PostgreSql;
 using Itis.MyTrainings.ChatHistoryService.PostgreSql.Repository;
 using Itis.MyTrainings.ChatHistoryService.Web.Masstransit.Consumers;

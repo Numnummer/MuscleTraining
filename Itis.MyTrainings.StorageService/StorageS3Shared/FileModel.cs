@@ -1,7 +1,7 @@
 namespace StorageS3Shared;
 
-public class FileModel
+public class FileModel(string fileName, byte[] fileContent)
 {
-    public string FileName { get; set; }
-    public byte[] FileContent { get; set; }
+    public string FileName { get; set; } = fileName;
+    public byte[] FileContent { get; set; } = fileContent;
 }

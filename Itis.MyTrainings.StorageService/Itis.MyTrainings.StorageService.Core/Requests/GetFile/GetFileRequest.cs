@@ -3,7 +3,7 @@ using StorageS3Shared;
 
 namespace Itis.MyTrainings.StorageService.Core.Requests.GetFile;
 
-public class GetFileRequest(string fileName) : IRequest<FileModel>
+public class GetFileRequest(string[][] fileName) : IRequest<FileModel[][]>
 {
-    public string FileName { get; set; } = fileName;
+    public string[][] FilesName { get; set; } = fileName;
 }
