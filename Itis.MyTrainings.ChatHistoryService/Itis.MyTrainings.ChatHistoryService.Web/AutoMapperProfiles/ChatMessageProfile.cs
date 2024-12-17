@@ -8,7 +8,15 @@ public class ChatMessageProfile : Profile
 {
     public ChatMessageProfile()
     {
-        CreateMap<UnicastChatMessageDto, UnicastChatMessage>();
-        CreateMap<MulticastChatMessageDto, ChatMessage>();
+        CreateMap<UnicastChatMessageDto, UnicastChatMessage>()
+            .ForSourceMember(source=>source.FileNames, opt=>
+                opt.DoNotValidate())
+            .ForSourceMember(source=>source.FilesContent, opt=>
+                opt.DoNotValidate());
+        CreateMap<MulticastChatMessageDto, ChatMessage>()
+            .ForSourceMember(source=>source.FileNames, opt=>
+                opt.DoNotValidate())
+            .ForSourceMember(source=>source.FilesContent, opt=>
+                opt.DoNotValidate());
     }
 }

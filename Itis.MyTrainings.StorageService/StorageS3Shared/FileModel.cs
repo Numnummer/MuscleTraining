@@ -1,6 +1,6 @@
-namespace Itis.MyTrainings.StorageService.Core.Entities;
+namespace StorageS3Shared;
 
-public class File
+public class FileModel
 {
     public string FileName { get; set; }
     public byte[] FileContent { get; set; }

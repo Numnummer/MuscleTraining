@@ -7,5 +7,7 @@ namespace ChatMessageDtos
         public string ToEmail { get; set; }
         public string MessageText { get; set; }
         public DateTime SendDate { get; set; }
+        public string[] FileNames { get; set; }
+        public byte[][] FilesContent { get; set; }
     }
 }

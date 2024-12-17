@@ -3,6 +3,7 @@ using Amazon.S3.Model;
 using Itis.MyTrainings.StorageService.Core.Entities;
 using MediatR;
 using Microsoft.Extensions.Options;
+using StorageS3Shared;
 
 namespace Itis.MyTrainings.StorageService.Core.Requests.PutFile;
 
@@ -11,11 +12,19 @@ public class PutFileRequestHandler(IAmazonS3 _s3Client,
 {
     public async Task Handle(PutFileRequest request, CancellationToken cancellationToken)
     {
-        if (request.File == null || request.File.Length == 0)
+        foreach (var file in request.Files)
+        {
+            await LoadFile(file, cancellationToken);
+        }
+    }
+
+    private async Task LoadFile(FileModel file, CancellationToken cancellationToken)
+    {
+        if (file == null || file.FileContent.Length == 0)
                 throw new FileNotFoundException();
     
-        var keyName = Path.GetFileName(request.File.FileName);
-        var fileSize = request.File.Length;
+        var keyName = Path.GetFileName(file.FileName);
+        var fileSize = file.FileContent.Length;
         var partSize = 5 * (1024 * 1024); // 5 MB
 
         await _s3Client.EnsureBucketExistsAsync(options.CurrentValue.BucketName);
@@ -32,31 +41,29 @@ public class PutFileRequestHandler(IAmazonS3 _s3Client,
         try
         {
             // Разделение файла на части и загрузка
-            long position = 0;
+            int position = 0;
             for (int i = 1; position < fileSize; i++)
             {
                 partSize = (int)Math.Min(partSize, fileSize - position);
-                using (var stream = new MemoryStream())
+                using var stream = new MemoryStream();
+                await stream.WriteAsync(file.FileContent.AsMemory(
+                    position, (int)partSize), cancellationToken);
+                stream.Position = 0;
+
+                var uploadRequest = new UploadPartRequest
                 {
-                    request.File.OpenReadStream().Position = position;
-                    await request.File.OpenReadStream().CopyToAsync(stream, partSize);
-                    stream.Position = 0;
+                    BucketName = options.CurrentValue.BucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId,
+                    PartNumber = i,
+                    PartSize = stream.Length,
+                    InputStream = stream
+                };
 
-                    var uploadRequest = new UploadPartRequest
-                    {
-                        BucketName = options.CurrentValue.BucketName,
-                        Key = keyName,
-                        UploadId = initResponse.UploadId,
-                        PartNumber = i,
-                        PartSize = stream.Length,
-                        InputStream = stream
-                    };
+                var uploadPartResponse = await _s3Client.UploadPartAsync(uploadRequest);
+                partETags.Add(new PartETag(i,uploadPartResponse.ETag));
 
-                    var uploadPartResponse = await _s3Client.UploadPartAsync(uploadRequest);
-                    partETags.Add(new PartETag(i,uploadPartResponse.ETag));
-
-                    position += partSize; // Увеличиваем позицию для следующей части
-                }
+                position += partSize; // Увеличиваем позицию для следующей части
             }
 
             // Завершение multipart загрузки

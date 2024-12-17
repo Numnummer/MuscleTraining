@@ -21,6 +21,7 @@ public class UnicastChatHistoryRecordConsumer : IConsumer<UnicastChatMessageDto>
     }
     public async Task Consume(ConsumeContext<UnicastChatMessageDto> context)
     {
-        await _chatHistoryRecordService.RecordUnicastMessage(_mapper.Map<UnicastChatMessage>(context.Message));
+        await _chatHistoryRecordService.RecordUnicastMessage(_mapper.Map<UnicastChatMessage>(context.Message),
+            context.Message.FileNames, context.Message.FilesContent);
     }
 }

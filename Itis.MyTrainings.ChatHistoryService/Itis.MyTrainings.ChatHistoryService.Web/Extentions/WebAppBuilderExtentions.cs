@@ -1,9 +1,10 @@
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Repository;
 using Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Services;
-using Itis.MyTrainings.ChatHistoryService.Core.Services;
+using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.S3Communication;
 using Itis.MyTrainings.ChatHistoryService.PostgreSql;
 using Itis.MyTrainings.ChatHistoryService.PostgreSql.Repository;
 using Itis.MyTrainings.ChatHistoryService.Web.Masstransit.Consumers;
+using Itis.MyTrainings.ChatHistoryService.Web.Services;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ public static class WebAppBuilderExtentions
 {
     public static void AddAppServices(this IServiceCollection services)
     {
+        services.AddScoped<IS3CommunicationService, S3CommunicationService>();
         services.AddScoped<IChatHistoryRecordService, ChatHistoryRecordService>();
     }
     
@@ -27,6 +29,11 @@ public static class WebAppBuilderExtentions
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("ChatDatabase"));
         });
+    }
+    
+    public static void ConfigureAppOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<StorageServiceOptions>(builder.Configuration.GetSection("S3Options"));
     }
 
     public static void AddMessageBroker(this WebApplicationBuilder builder)

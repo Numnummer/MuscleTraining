@@ -10,6 +10,7 @@ public class DeleteFileRequestHandler(IAmazonS3 s3Client,
 {
     public async Task Handle(DeleteFileRequest request, CancellationToken cancellationToken)
     {
-        await s3Client.DeleteAsync(options.CurrentValue.BucketName, request.FilePath, null);
+        await s3Client.DeletesAsync(options.CurrentValue.BucketName, 
+            request.FilesPath, null, cancellationToken);
     }
 }

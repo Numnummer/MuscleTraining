@@ -13,6 +13,7 @@ builder.Services.AddAutoMapper(mapper =>
 });
 builder.AddMessageBroker();
 builder.AddAppDbContext();
+builder.ConfigureAppOptions();
 builder.Services.AddAppRepositories();
 builder.Services.AddAppServices();
 var app = builder.Build();

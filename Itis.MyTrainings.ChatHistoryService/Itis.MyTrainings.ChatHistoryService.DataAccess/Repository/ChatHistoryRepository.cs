@@ -4,6 +4,7 @@ using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Enums;
 using Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.LoadMulticastChatHistory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using StorageS3Shared;
 
 namespace Itis.MyTrainings.ChatHistoryService.PostgreSql.Repository;
 
@@ -26,7 +27,18 @@ public class ChatHistoryRepository : IChatHistoryRepository
                  || msg.FromEmail == secondEmail)
                 &&(msg.ToEmail == firstEmail
                    || msg.ToEmail == secondEmail))
-            .Select(msg => new LoadChatHistoryResponse(msg.MessageText, msg.FromEmail, msg.SendDate))
+            .GroupJoin(
+                _dbContext.UnicastFiles,
+                msg => msg.Id, // Key from UnicastChatMessages
+                file => file.MessageId,     // Key from Files
+                (msg, files) => new { msg, files }
+            )
+            .Select(group => new LoadChatHistoryResponse(
+                group.msg.MessageText,
+                group.msg.FromEmail,
+                group.msg.SendDate,
+                group.files.Where(f=>f.MessageId==group.msg.Id).ToArray()
+            ))
             .ToArrayAsync();
     }
 
@@ -37,8 +49,18 @@ public class ChatHistoryRepository : IChatHistoryRepository
         
         return await _dbContext.ChatMessages
             .Where(msg => msg.GroupName == (Group)group)
-            .Select(msg=>
-                new LoadChatHistoryResponse(msg.MessageText,msg.SenderEmail, msg.SendDate))
+            .GroupJoin(
+                _dbContext.MulticastFiles,
+                msg => msg.Id, // Key from ChatMessages
+                file => file.MessageId,     // Key from Files
+                (msg, files) => new { msg, files }
+            )
+            .Select(g => new LoadChatHistoryResponse(
+                g.msg.MessageText,
+                g.msg.SenderEmail,
+                g.msg.SendDate,
+                g.files.Where(f=>f.MessageId==g.msg.Id).ToArray()
+            ))
             .ToArrayAsync();
     }
 

@@ -38,7 +38,8 @@ public class SupportChatHub : Hub
     /// <param name="author"></param>
     /// <param name="messageText"></param>
     /// <param name="destination"></param>
-    public async Task SendMulticastMessageAsync(string author, string messageText, string destination, string role)
+    public async Task SendMulticastMessageAsync(string author, string messageText, 
+        string destination, string role, string[] fileNames, byte[][] filesContent)
     {
         var date = DateTime.Now;
         var group = new Group();
@@ -78,7 +79,10 @@ public class SupportChatHub : Hub
             SendDate = date,
             SenderEmail = author,
         };
-        await _bus.Publish(_mapper.Map<MulticastChatMessageDto>(message));
+        var dto = _mapper.Map<MulticastChatMessageDto>(message);
+        dto.FileNames = fileNames;
+        dto.FilesContent = filesContent;
+        await _bus.Publish(dto);
     }
 
     /// <summary>
@@ -87,7 +91,8 @@ public class SupportChatHub : Hub
     /// <param name="author"></param>
     /// <param name="messageText"></param>
     /// <param name="destination"></param>
-    public async Task SendUnicastMessageAsync(string author, string messageText, string destination)
+    public async Task SendUnicastMessageAsync(string author, string messageText, 
+        string destination, string[] fileNames, byte[][] filesContent)
     {
         var date = DateTime.Now;
         var connectionId = _connections.FirstOrDefault(x => x.Value == destination).Key;
@@ -102,7 +107,10 @@ public class SupportChatHub : Hub
             SendDate = date,
             ToEmail = destination,
         };
-        await _bus.Publish(_mapper.Map<UnicastChatMessageDto>(message));
+        var dto = _mapper.Map<UnicastChatMessageDto>(message);
+        dto.FileNames = fileNames;
+        dto.FilesContent = filesContent;
+        await _bus.Publish(dto);
     }
 
     /// <summary>

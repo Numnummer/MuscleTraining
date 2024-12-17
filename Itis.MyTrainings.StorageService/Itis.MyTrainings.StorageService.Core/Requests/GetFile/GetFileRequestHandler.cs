@@ -2,19 +2,21 @@ using Amazon.S3;
 using Itis.MyTrainings.StorageService.Core.Entities;
 using MediatR;
 using Microsoft.Extensions.Options;
-using File = Itis.MyTrainings.StorageService.Core.Entities.File;
+using StorageS3Shared;
 
 namespace Itis.MyTrainings.StorageService.Core.Requests.GetFile;
 
 public class GetFileRequestHandler(IAmazonS3 s3Client,
-    IOptionsMonitor<S3Options> options) : IRequestHandler<GetFileRequest, File>
+    IOptionsMonitor<S3Options> options) : IRequestHandler<GetFileRequest, FileModel>
 {
-    public async Task<File> Handle(GetFileRequest request, CancellationToken cancellationToken)
+    public async Task<FileModel> Handle(GetFileRequest request, CancellationToken cancellationToken)
     {
         var obj = await s3Client.GetObjectAsync(
             options.CurrentValue.BucketName, request.FileName, cancellationToken);
-        var response = new File();
-        response.FileName = obj.Key;
+        var response = new FileModel
+        {
+            FileName = obj.Key
+        };
         await using (var stream = obj.ResponseStream)
         {
             using (var reader = new BinaryReader(stream))
