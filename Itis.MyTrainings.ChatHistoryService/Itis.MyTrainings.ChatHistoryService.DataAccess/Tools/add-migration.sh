@@ -1,3 +1,3 @@
-dotnet ef migrations -p ../../Itis.MyTrainings.ChatHistoryService.PostgreSql/ \
+dotnet ef migrations -p ../../Itis.MyTrainings.ChatHistoryService.DataAccess/ \
 -s ../../Itis.MyTrainings.ChatHistoryService.Web/ \
-add AddedMainEntities  
+add AddedFilesTable  

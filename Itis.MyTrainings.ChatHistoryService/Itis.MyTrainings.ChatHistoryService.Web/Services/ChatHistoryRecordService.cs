@@ -31,6 +31,7 @@ public class ChatHistoryRecordService : IChatHistoryRecordService
             await _filesRepository.AddMulticastFileAsync(fileNames, message.Id);
             await _chatHistoryRepository.RecordMessageAsync(message);
             await transaction.CommitAsync();
+            _logger.LogInformation($"Recording done");
         }
         catch (Exception e)
         {

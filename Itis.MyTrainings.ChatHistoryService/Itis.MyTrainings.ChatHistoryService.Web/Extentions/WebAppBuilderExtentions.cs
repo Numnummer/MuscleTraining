@@ -22,6 +22,7 @@ public static class WebAppBuilderExtentions
     public static void AddAppRepositories(this IServiceCollection services)
     {
         services.AddScoped<IChatHistoryRepository, ChatHistoryRepository>();
+        services.AddScoped<IFilesRepository, FilesRepository>();
     }
     
     public static void AddAppDbContext(this WebApplicationBuilder builder)
@@ -46,7 +47,7 @@ public static class WebAppBuilderExtentions
             
             bus.UsingRabbitMq((context, config) =>
             {
-                config.Host("rabbitmq", "/", h =>
+                config.Host(builder.Configuration["RabbitMQ:Host"], "/", h =>
                 {
                     h.Username(builder.Configuration["RabbitMQ:UserName"]);
                     h.Password(builder.Configuration["RabbitMQ:Password"]);

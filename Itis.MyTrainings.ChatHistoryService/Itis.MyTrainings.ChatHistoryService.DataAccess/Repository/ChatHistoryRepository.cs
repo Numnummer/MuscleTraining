@@ -44,7 +44,7 @@ public class ChatHistoryRepository : IChatHistoryRepository
                     .Select(f=>new FileModel(f.FileName,null))
                     .ToArray()))
             .ToArrayAsync();
-        return await AddFilesContent(chatHistory);
+        return chatHistory;
     }
 
     public async Task<LoadChatHistoryResponse[]> LoadMulticastChatHistoryAsync(string groupString)
@@ -69,7 +69,7 @@ public class ChatHistoryRepository : IChatHistoryRepository
                     .ToArray()
             ))
             .ToArrayAsync();
-        return await AddFilesContent(chatHistory);
+        return chatHistory;
     }
 
     private async Task<LoadChatHistoryResponse[]> AddFilesContent(LoadChatHistoryResponse[] chatHistory)

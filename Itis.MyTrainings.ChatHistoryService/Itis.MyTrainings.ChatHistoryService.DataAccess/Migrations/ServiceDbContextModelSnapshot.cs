@@ -37,7 +37,7 @@ namespace Itis.MyTrainings.ChatHistoryService.PostgreSql.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<DateTime>("SendDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SenderEmail")
                         .IsRequired()
@@ -49,6 +49,25 @@ namespace Itis.MyTrainings.ChatHistoryService.PostgreSql.Migrations
                     b.ToTable("ChatMessages");
                 });
 
+            modelBuilder.Entity("Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities.Files", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Files");
+                });
+
             modelBuilder.Entity("Itis.MyTrainings.ChatHistoryService.Core.Models.SupportChat.Entities.UnicastChatMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -57,18 +76,21 @@ namespace Itis.MyTrainings.ChatHistoryService.PostgreSql.Migrations
 
                     b.Property<string>("FromEmail")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("MessageText")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<DateTime>("SendDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ToEmail")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 

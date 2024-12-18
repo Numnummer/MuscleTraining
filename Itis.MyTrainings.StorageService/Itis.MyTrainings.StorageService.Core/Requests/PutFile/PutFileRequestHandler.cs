@@ -27,7 +27,10 @@ public class PutFileRequestHandler(IAmazonS3 _s3Client,
         var fileSize = file.FileContent.Length;
         var partSize = 5 * (1024 * 1024); // 5 MB
 
-        await _s3Client.EnsureBucketExistsAsync(options.CurrentValue.BucketName);
+        var buckets = await _s3Client.ListBucketsAsync();
+        if(buckets.Buckets == null || !buckets.Buckets.Exists(b=>
+               b.BucketName.Equals(options.CurrentValue.BucketName)))
+            await _s3Client.PutBucketAsync(options.CurrentValue.BucketName, cancellationToken);
         
         // Инициализация multipart загрузки
         var initiateRequest = new InitiateMultipartUploadRequest
