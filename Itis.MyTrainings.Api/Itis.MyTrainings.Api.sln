@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.Api.Contra
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ChatMessageDtos", "ChatMessageDtos\ChatMessageDtos.shproj", "{FA7AE532-4FD4-403F-B18C-4198DBDF92EB}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StorageS3Shared", "StorageS3Shared\StorageS3Shared.shproj", "{FA7AE532-4FD4-403F-B18C-4198DBDF92EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

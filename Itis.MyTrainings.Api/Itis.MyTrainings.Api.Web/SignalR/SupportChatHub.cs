@@ -38,35 +38,37 @@ public class SupportChatHub : Hub
     /// <param name="author"></param>
     /// <param name="messageText"></param>
     /// <param name="destination"></param>
-    public async Task SendMulticastMessageAsync(string author, string messageText, string destination, string role)
+    public async Task SendMulticastMessageAsync(string author, string messageText, 
+        string destination, string role, string[] fileNames, string[] filesContentBase64)
     {
+        var filesContent = filesContentBase64.Select(base64String => Convert.FromBase64String(base64String)).ToArray();
         var date = DateTime.Now;
         var group = new Group();
         switch (destination + " " + role)
         {
             case "Пользователь Coach":
                 group = Group.UserCoach;
-                await Clients.Group(_userCoachRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userCoachRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString(), fileNames);
                 break;
             case "Пользователь Administrator":
                 group = Group.UserAdmin;
-                await Clients.Group(_userAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString(), fileNames);
                 break;
             case "Тренер User":
                 group = Group.UserCoach;  
-                await Clients.Group(_userCoachRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userCoachRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString(), fileNames);
                 break;
             case "Тренер Administrator":
                 group = Group.CoachAdmin;  
-                await Clients.Group(_coachAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_coachAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString(), fileNames);
                 break;
             case "Админ User":
                 group = Group.UserAdmin;
-                await Clients.Group(_userAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_userAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString(), fileNames);
                 break;
             case "Админ Coach":
                 group = Group.CoachAdmin;
-                await Clients.Group(_coachAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString());
+                await Clients.Group(_coachAdminRoom).SendAsync("onMulticastMessageReceive", author, messageText, date, group.ToString(), fileNames);
                 break;
         }
 
@@ -78,7 +80,10 @@ public class SupportChatHub : Hub
             SendDate = date,
             SenderEmail = author,
         };
-        await _bus.Publish(_mapper.Map<MulticastChatMessageDto>(message));
+        var dto = _mapper.Map<MulticastChatMessageDto>(message);
+        dto.FileNames = fileNames;
+        dto.FilesContent = filesContent;
+        await _bus.Publish(dto);
     }
 
     /// <summary>
@@ -87,12 +92,13 @@ public class SupportChatHub : Hub
     /// <param name="author"></param>
     /// <param name="messageText"></param>
     /// <param name="destination"></param>
-    public async Task SendUnicastMessageAsync(string author, string messageText, string destination)
+    public async Task SendUnicastMessageAsync(string author, string messageText, 
+        string destination, string[] fileNames, byte[][] filesContent)
     {
         var date = DateTime.Now;
         var connectionId = _connections.FirstOrDefault(x => x.Value == destination).Key;
         await Clients.Client(connectionId)
-            .SendAsync("onUnicastMessageReceive", author, messageText, date);
+            .SendAsync("onUnicastMessageReceive", author, messageText, date, fileNames);
         
         var message = new UnicastChatMessage()
         {
@@ -102,7 +108,10 @@ public class SupportChatHub : Hub
             SendDate = date,
             ToEmail = destination,
         };
-        await _bus.Publish(_mapper.Map<UnicastChatMessageDto>(message));
+        var dto = _mapper.Map<UnicastChatMessageDto>(message);
+        dto.FileNames = fileNames;
+        dto.FilesContent = filesContent;
+        await _bus.Publish(dto);
     }
 
     /// <summary>

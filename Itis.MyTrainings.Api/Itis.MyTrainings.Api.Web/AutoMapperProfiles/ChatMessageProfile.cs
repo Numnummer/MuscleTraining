@@ -8,7 +8,15 @@ public class ChatMessageProfile : Profile
 {
     public ChatMessageProfile()
     {
-        CreateMap<UnicastChatMessage, UnicastChatMessageDto>();
-        CreateMap<ChatMessage, MulticastChatMessageDto>();
+        CreateMap<UnicastChatMessage, UnicastChatMessageDto>()
+            .ForMember(dest => dest.FileNames, opt => 
+                opt.Ignore())
+            .ForMember(dest => dest.FilesContent, opt => 
+                opt.Ignore());
+        CreateMap<ChatMessage, MulticastChatMessageDto>()
+            .ForMember(dest => dest.FileNames, opt => 
+                opt.Ignore())
+            .ForMember(dest => dest.FilesContent, opt => 
+                opt.Ignore());
     }
 }

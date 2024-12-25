@@ -29,7 +29,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Itis.MyTrainings.ChatHistoryService.Core\Itis.MyTrainings.ChatHistoryService.Core.csproj" />
-      <ProjectReference Include="..\Itis.MyTrainings.ChatHistoryService.PostgreSql\Itis.MyTrainings.ChatHistoryService.PostgreSql.csproj" />
+      <ProjectReference Include="..\Itis.MyTrainings.ChatHistoryService.DataAccess\Itis.MyTrainings.ChatHistoryService.DataAccess.csproj" />
     </ItemGroup>
 
     <Import Project="..\ChatMessageDtos\ChatMessageDtos.projitems" Label="Shared" />

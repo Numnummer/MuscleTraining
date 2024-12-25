@@ -6,7 +6,9 @@ namespace Itis.MyTrainings.ChatHistoryService.PostgreSql;
 public class ServiceDbContext : DbContext
 {
     public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<Files> MulticastFiles { get; set; }
     public DbSet<UnicastChatMessage> UnicastChatMessages { get; set; }
+    public DbSet<Files> UnicastFiles { get; set; }
 
     public ServiceDbContext(DbContextOptions<ServiceDbContext> options) : base(options)
     {

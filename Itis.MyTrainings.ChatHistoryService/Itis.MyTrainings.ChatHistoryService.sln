@@ -2,11 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.ChatHistoryService.Core", "Itis.MyTrainings.ChatHistoryService.Core\Itis.MyTrainings.ChatHistoryService.Core.csproj", "{53D27341-F9BF-4BA7-901D-E55092223658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.ChatHistoryService.PostgreSql", "Itis.MyTrainings.ChatHistoryService.PostgreSql\Itis.MyTrainings.ChatHistoryService.PostgreSql.csproj", "{B4721AB7-C446-4165-8593-E78F7D308ED4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.ChatHistoryService.DataAccess", "Itis.MyTrainings.ChatHistoryService.DataAccess\Itis.MyTrainings.ChatHistoryService.DataAccess.csproj", "{B4721AB7-C446-4165-8593-E78F7D308ED4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.ChatHistoryService.Web", "Itis.MyTrainings.ChatHistoryService.Web\Itis.MyTrainings.ChatHistoryService.Web.csproj", "{B6956B42-0913-4172-AE6E-D10317448652}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ChatMessageDtos", "ChatMessageDtos\ChatMessageDtos.shproj", "{FA7AE532-4FD4-403F-B18C-4198DBDF92EB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StorageS3Shared", "StorageS3Shared\StorageS3Shared.shproj", "{FA7AE532-4FD4-403F-B18C-4198DBDF92EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

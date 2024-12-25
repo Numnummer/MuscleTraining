@@ -1,3 +1,5 @@
+using StorageS3Shared;
+
 namespace Itis.MyTrainings.Api.Contracts.Requests.SupportChat.LoadMulticastChatHistory;
 
 public class LoadChatHistoryResponse
@@ -12,4 +14,7 @@ public class LoadChatHistoryResponse
     public string MessageText { get; set; }
     public string SenderEmail { get; set; }
     public DateTime SentDateTime { get; set; }
+    
+    public FileModel[] Files { get; set; }
+    
 }

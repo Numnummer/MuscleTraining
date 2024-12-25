@@ -4,6 +4,6 @@ namespace Itis.MyTrainings.ChatHistoryService.Core.Abstractions.Services;
 
 public interface IChatHistoryRecordService
 {
-    Task RecordMessage(ChatMessage message);
-    Task RecordUnicastMessage(UnicastChatMessage message);
+    Task RecordMessage(ChatMessage message, string[] fileNames, byte[][] filesContent);
+    Task RecordUnicastMessage(UnicastChatMessage message, string[] fileNames, byte[][] filesContent);
 }
