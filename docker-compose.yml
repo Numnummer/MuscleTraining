@@ -77,6 +77,21 @@
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
 
+  storage-service:
+    build:
+      context: ./Itis.MyTrainings.StorageService
+      dockerfile: Dockerfile        
+    ports:
+      - 8082:80
+    depends_on:
+      chat-history-service:
+        condition: service_started
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
+    
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
@@ -92,7 +107,29 @@
           timeout: 5s
           retries: 5
 
+  minio:
+    image: quay.io/minio/minio
+    container_name: asd.minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/minio/data:/data
+    environment:
+      MINIO_ROOT_USER: "asd"
+      MINIO_ROOT_PASSWORD: "qweASD123"
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"] # Check the live health endpoint
+      interval: 30s                # Interval between health checks
+      timeout: 10s                 # Time to wait for the health check to complete
+      retries: 3   
+    
+
 volumes:
   api-data:  
   chat-data:
+  minio-data:
       
+networks:
+  my_custom_network:

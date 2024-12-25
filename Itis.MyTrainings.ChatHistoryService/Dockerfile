@@ -7,8 +7,10 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["./Itis.MyTrainings.ChatHistoryService.Web/Itis.MyTrainings.ChatHistoryService.Web.csproj", "./Itis.MyTrainings.ChatHistoryService.Web/"]
-COPY ["./Itis.MyTrainings.ChatHistoryService.PostgreSql/Itis.MyTrainings.ChatHistoryService.PostgreSql.csproj", "./Itis.MyTrainings.ChatHistoryService.PostgreSql/"]
+COPY ["./Itis.MyTrainings.ChatHistoryService.DataAccess/Itis.MyTrainings.ChatHistoryService.DataAccess.csproj", "./Itis.MyTrainings.ChatHistoryService.DataAccess/"]
 COPY ["./Itis.MyTrainings.ChatHistoryService.Core/Itis.MyTrainings.ChatHistoryService.Core.csproj", "./Itis.MyTrainings.ChatHistoryService.Core/"]
+COPY ["./ChatMessageDtos/ChatMessageDtos.shproj", "./ChatMessageDtos/"]
+COPY ["./StorageS3Shared/StorageS3Shared.shproj", "./StorageS3Shared/"]
 
 RUN dotnet restore "Itis.MyTrainings.ChatHistoryService.Web/Itis.MyTrainings.ChatHistoryService.Web.csproj"
 COPY . .
