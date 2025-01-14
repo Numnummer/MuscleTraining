@@ -1,3 +1,4 @@
+using System.Text;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Itis.MyTrainings.StorageService.Core.Entities;
@@ -17,12 +18,14 @@ public class PutFileRequestHandler : IRequestHandler<PutFileRequest>
     private readonly IAmazonS3 _s3TempClient;
     private readonly IOptionsMonitor<S3Options> options;
     private readonly IConnectionMultiplexer cacheConnection;
+    private readonly string _metadataBucketName;
 
     public PutFileRequestHandler(IOptionsMonitor<S3Options> options, IConnectionMultiplexer cacheConnection,
         IServiceProvider serviceProvider)
     {
         this.options = options;
         this.cacheConnection = cacheConnection;
+        _metadataBucketName = "meta";
         _s3Client = serviceProvider.GetServices<IAmazonS3>()
             .First(client => client.Config.ServiceURL == "http://minio:9000/"); // Adjust this logic if necessary
 
@@ -38,12 +41,14 @@ public class PutFileRequestHandler : IRequestHandler<PutFileRequest>
                 await LoadMetadata(file.FileName, "", cancellationToken);
                 await LoadFile(_s3TempClient, file, cancellationToken);
                 await LoadFile(_s3Client, file, cancellationToken);
+                await LoadMetadataToPermanentS3(file.FileName, "", cancellationToken);
             }
             catch (Exception e)
             {
                 await DeleteMetadata(file.FileName, cancellationToken);
                 await DeleteFile(_s3TempClient, file, cancellationToken);
                 await DeleteFile(_s3Client, file, cancellationToken);
+                await DeleteMetadataFromPermanentS3(file.FileName, cancellationToken);
             }
             
         }
@@ -86,6 +91,26 @@ public class PutFileRequestHandler : IRequestHandler<PutFileRequest>
         var keyName = Path.GetFileName(file.FileName);
         await client.DeletesAsync(options.CurrentValue.BucketName, 
             [keyName], null, cancellationToken);
+    }
+    
+    private async Task DeleteMetadataFromPermanentS3(string fileName, CancellationToken cancellationToken)
+    {
+        await _s3Client.DeletesAsync(options.CurrentValue.BucketName, 
+            [fileName], null, cancellationToken);
+    }
+    
+    private async Task LoadMetadataToPermanentS3(string fileName, string json, CancellationToken cancellationToken)
+    {
+        var buckets = await _s3Client.ListBucketsAsync();
+        if(buckets.Buckets == null || !buckets.Buckets.Exists(b=>
+               b.BucketName.Equals(_metadataBucketName)))
+            await _s3Client.PutBucketAsync(_metadataBucketName, cancellationToken);
+        var jsonBytes = Encoding.UTF8.GetBytes(json);
+        
+        using var memoryStream = new MemoryStream(jsonBytes);
+        memoryStream.Position = 0;
+
+        await _s3Client.UploadObjectFromStreamAsync(_metadataBucketName, fileName, memoryStream,null, cancellationToken);
     }
 
     private async Task LoadFile(IAmazonS3 client, FileModel file, CancellationToken cancellationToken)
