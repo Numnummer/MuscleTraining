@@ -9,4 +9,5 @@ public class MulticastChatMessageDto
     public Group? GroupName { get; set; }
     public string[] FileNames { get; set; }
     public byte[][] FilesContent { get; set; }
+    public string[] FilesMetadata { get; set; }
 }

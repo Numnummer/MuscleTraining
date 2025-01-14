@@ -23,6 +23,6 @@ public class ChatHistoryRecordConsumer : IConsumer<MulticastChatMessageDto>
     public async Task Consume(ConsumeContext<MulticastChatMessageDto> context)
     {
         await _chatHistoryRecordService.RecordMessage(_mapper.Map<ChatMessage>(context.Message),
-            context.Message.FileNames, context.Message.FilesContent);
+            context.Message.FileNames, context.Message.FilesContent, context.Message.FilesMetadata);
     }
 }

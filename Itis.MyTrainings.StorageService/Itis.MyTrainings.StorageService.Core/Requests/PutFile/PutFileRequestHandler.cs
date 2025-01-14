@@ -38,10 +38,10 @@ public class PutFileRequestHandler : IRequestHandler<PutFileRequest>
         {
             try
             {
-                await LoadMetadata(file.FileName, "", cancellationToken);
+                await LoadMetadata(file.FileName, file.FileMetadata, cancellationToken);
                 await LoadFile(_s3TempClient, file, cancellationToken);
                 await LoadFile(_s3Client, file, cancellationToken);
-                await LoadMetadataToPermanentS3(file.FileName, "", cancellationToken);
+                await LoadMetadataToPermanentS3(file.FileName, file.FileMetadata, cancellationToken);
             }
             catch (Exception e)
             {

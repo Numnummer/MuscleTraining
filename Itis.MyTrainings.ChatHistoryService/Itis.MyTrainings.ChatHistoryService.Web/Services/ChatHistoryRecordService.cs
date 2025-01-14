@@ -22,12 +22,12 @@ public class ChatHistoryRecordService : IChatHistoryRecordService
         _logger = logger;
     }
 
-    public async Task RecordMessage(ChatMessage message, string[] fileNames, byte[][] filesContent)
+    public async Task RecordMessage(ChatMessage message, string[] fileNames, byte[][] filesContent, string[] filesMetadata)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync();
         try
         {
-            await _s3CommunicationService.UploadFiles(fileNames, filesContent);
+            await _s3CommunicationService.UploadFiles(fileNames, filesContent, filesMetadata);
             await _filesRepository.AddMulticastFileAsync(fileNames, message.Id);
             await _chatHistoryRepository.RecordMessageAsync(message);
             await transaction.CommitAsync();
@@ -50,12 +50,12 @@ public class ChatHistoryRecordService : IChatHistoryRecordService
         }
     }
 
-    public async Task RecordUnicastMessage(UnicastChatMessage message, string[] fileNames, byte[][] filesContent)
+    public async Task RecordUnicastMessage(UnicastChatMessage message, string[] fileNames, byte[][] filesContent, string[] filesMetadata)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync();
         try
         {
-            await _s3CommunicationService.UploadFiles(fileNames, filesContent);
+            await _s3CommunicationService.UploadFiles(fileNames, filesContent, filesMetadata);
             await _filesRepository.AddUnicastFileAsync(fileNames, message.Id);
             await _chatHistoryRepository.RecordUnicastMessageAsync(message);
             await transaction.CommitAsync();

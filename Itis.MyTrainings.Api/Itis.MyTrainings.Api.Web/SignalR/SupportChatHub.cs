@@ -39,7 +39,8 @@ public class SupportChatHub : Hub
     /// <param name="messageText"></param>
     /// <param name="destination"></param>
     public async Task SendMulticastMessageAsync(string author, string messageText, 
-        string destination, string role, string[] fileNames, string[] filesContentBase64)
+        string destination, string role, string[] fileNames, string[] filesContentBase64,
+        string[] filesMetadata)
     {
         var filesContent = filesContentBase64.Select(base64String => Convert.FromBase64String(base64String)).ToArray();
         var date = DateTime.Now;
@@ -83,6 +84,7 @@ public class SupportChatHub : Hub
         var dto = _mapper.Map<MulticastChatMessageDto>(message);
         dto.FileNames = fileNames;
         dto.FilesContent = filesContent;
+        dto.FilesMetadata = filesMetadata;
         await _bus.Publish(dto);
     }
 
@@ -93,7 +95,8 @@ public class SupportChatHub : Hub
     /// <param name="messageText"></param>
     /// <param name="destination"></param>
     public async Task SendUnicastMessageAsync(string author, string messageText, 
-        string destination, string[] fileNames, byte[][] filesContent)
+        string destination, string[] fileNames, byte[][] filesContent,
+        string[] filesMetadata)
     {
         var date = DateTime.Now;
         var connectionId = _connections.FirstOrDefault(x => x.Value == destination).Key;
@@ -111,6 +114,7 @@ public class SupportChatHub : Hub
         var dto = _mapper.Map<UnicastChatMessageDto>(message);
         dto.FileNames = fileNames;
         dto.FilesContent = filesContent;
+        dto.FilesMetadata = filesMetadata;
         await _bus.Publish(dto);
     }
 
