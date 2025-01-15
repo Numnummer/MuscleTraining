@@ -19,12 +19,12 @@ public class S3CommunicationService : IS3CommunicationService
         _logger = logger;
     }
 
-    public async Task UploadFiles(string[] fileNames, byte[][] fileBytes)
+    public async Task UploadFiles(string[] fileNames, byte[][] fileBytes, string[] filesMetadata)
     {
         var httpClient = new HttpClient();
         var body = fileNames.
             Select((fileName, index) => 
-                new FileModel(fileName, fileBytes[index]))
+                new FileModel(fileName, fileBytes[index], filesMetadata[index]))
             .ToArray();
         var url = $"{_storageOptions.CurrentValue.Url}/putFile";
         var res = await httpClient.PutAsJsonAsync(url, body);

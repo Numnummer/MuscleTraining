@@ -41,7 +41,7 @@ public class ChatHistoryRepository : IChatHistoryRepository
                 group.msg.FromEmail,
                 group.msg.SendDate,
                 group.files.Where(f=>f.MessageId==group.msg.Id)
-                    .Select(f=>new FileModel(f.FileName,null))
+                    .Select(f=>new FileModel(f.FileName,null, null))
                     .ToArray()))
             .ToArrayAsync();
         return chatHistory;
@@ -65,7 +65,7 @@ public class ChatHistoryRepository : IChatHistoryRepository
                 g.msg.SenderEmail,
                 g.msg.SendDate,
                 g.files.Where(f=>f.MessageId==g.msg.Id)
-                    .Select(f=>new FileModel(f.FileName,null))
+                    .Select(f=>new FileModel(f.FileName,null, null))
                     .ToArray()
             ))
             .ToArrayAsync();
