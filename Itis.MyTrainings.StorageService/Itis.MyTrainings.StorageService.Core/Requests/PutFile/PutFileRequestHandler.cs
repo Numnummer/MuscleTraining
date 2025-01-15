@@ -27,10 +27,10 @@ public class PutFileRequestHandler : IRequestHandler<PutFileRequest>
         this.cacheConnection = cacheConnection;
         _metadataBucketName = "meta";
         _s3Client = serviceProvider.GetServices<IAmazonS3>()
-            .First(client => client.Config.ServiceURL == "http://minio:9000/"); // Adjust this logic if necessary
+            .First(client => client.Config.ServiceURL == "http://localhost:9000/");
 
         _s3TempClient = serviceProvider.GetServices<IAmazonS3>()
-            .First(client => client.Config.ServiceURL == "http://minio:9001/");
+            .First(client => client.Config.ServiceURL == "http://localhost:9002/");
     }
     public async Task Handle(PutFileRequest request, CancellationToken cancellationToken)
     {
