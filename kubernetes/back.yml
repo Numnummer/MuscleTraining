@@ -1,0 +1,163 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main-api
+  namespace: my-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main-api
+  template:
+    metadata:
+      labels:
+        app: main-api
+    spec:
+      containers:
+        - name: main-api
+          image: numnummer/muscletraining-main-api # Replace with your image registry or build pipeline
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_KEY
+              value: asdasdasdasdasdasdaasda212
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      initContainers:
+        - name: wait-for-dependencies
+          image: busybox
+          command:
+            - sh
+            - -c
+            - >
+              while ! nc -z api-postgres 5432 || ! nc -z rabbitmq 5672; do
+                echo "Waiting for dependencies...";
+                sleep 3;
+              done;
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: main-api
+  namespace: my-project
+spec:
+  type: NodePort # Exposes the service on a NodePort
+  ports:
+    - name: http
+      port: 80 # Internal service port
+      targetPort: 80 # Container port
+      nodePort: 30080 # Exposes the service on this port (can be accessed at localhost:30080)
+  selector:
+    app: main-api
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-history-service
+  namespace: my-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-history-service
+  template:
+    metadata:
+      labels:
+        app: chat-history-service
+    spec:
+      containers:
+        - name: chat-history-service
+          image: numnummer/muscletraining-chat-history-service # Replace with your image registry or build pipeline
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_KEY
+              value: asdasdasdasdasdasdaasda212
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      initContainers:
+        - name: wait-for-dependencies
+          image: busybox
+          command:
+            - sh
+            - -c
+            - >
+              while ! nc -z chat-history-postgres 5432 || ! nc -z rabbitmq 5672; do
+                echo "Waiting for dependencies...";
+                sleep 3;
+              done;
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-history-service
+  namespace: my-project
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: chat-history-service
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-service
+  namespace: my-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-service
+  template:
+    metadata:
+      labels:
+        app: storage-service
+    spec:
+      containers:
+        - name: storage-service
+          image: numnummer/muscletraining-storage-service # Replace with your image registry or build pipeline
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      initContainers:
+        - name: wait-for-dependencies
+          image: busybox
+          command:
+            - sh
+            - -c
+            - >
+              while ! nc -z chat-history-service 80 || ! nc -z minio 9000; do
+                echo "Waiting for dependencies...";
+                sleep 3;
+              done;
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-service
+  namespace: my-project
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: storage-service
+  type: ClusterIP

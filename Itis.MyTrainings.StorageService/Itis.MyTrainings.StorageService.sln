@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.StorageService.Web", "Itis.MyTrainings.StorageService.Web\Itis.MyTrainings.StorageService.Web.csproj", "{A803E727-982D-4454-AA3C-9FEC898EA21A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.StorageService.Core", "Itis.MyTrainings.StorageService.Core\Itis.MyTrainings.StorageService.Core.csproj", "{7C607EF6-3F16-4FA9-A35A-24DEDE00FDB2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StorageS3Shared", "StorageS3Shared\StorageS3Shared.shproj", "{FA7AE532-4FD4-403F-B18C-4198DBDF92EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A803E727-982D-4454-AA3C-9FEC898EA21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A803E727-982D-4454-AA3C-9FEC898EA21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A803E727-982D-4454-AA3C-9FEC898EA21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A803E727-982D-4454-AA3C-9FEC898EA21A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C607EF6-3F16-4FA9-A35A-24DEDE00FDB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C607EF6-3F16-4FA9-A35A-24DEDE00FDB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C607EF6-3F16-4FA9-A35A-24DEDE00FDB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C607EF6-3F16-4FA9-A35A-24DEDE00FDB2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
