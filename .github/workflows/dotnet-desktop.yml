@@ -145,4 +145,54 @@ jobs:
       - name: Fail if tests fail
         if: ${{ failure() }}
         run: exit 1
+
+  storageService:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        working-directory: ./Itis.MyTrainings.StorageService
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ./Itis.MyTrainings.StorageService
+        run: dotnet build --no-restore #-warnaserror
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: "csharp"
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      # Execute all unit tests in the solution
+      - name: Execute unit tests
+        working-directory: ./Itis.MyTrainings.StorageService
+        run: dotnet test
+
+      - name: Check for Warnings
+        run: |
+          if grep -q "warning" build_output.log; then
+            echo "Warnings were found!"
+            exit 1
+          fi
+
+      - name: Fail if tests fail
+        if: ${{ failure() }}
+        run: exit 1
+  
   
