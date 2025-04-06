@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package RevertTransactionService;
+
+option csharp_namespace = "Itis.MyTrainings.PaymentService.Web.Protos";
+
+service RevertTransaction{
+  rpc RevertTransaction(RevertTransactionRequest) returns (RevertTransactionResponse);
+}
+
+message RevertTransactionRequest{
+  string operation_id = 1;    // UUID операции
+}
+
+message RevertTransactionResponse{
+  string error = 1;           // Ошибка
+}

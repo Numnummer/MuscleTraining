@@ -7,10 +7,17 @@
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>bdfabff1-6675-4a39-8ef6-1380e7099d00</UserSecretsId>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <Protobuf Include="Protos\transaction.proto" GrpcServices="Client" />
+        <Protobuf Include="Protos\revertTransaction.proto" GrpcServices="Server" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.70.0" />
         <PackageReference Include="MassTransit" Version="7.3.1" />
         <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.1" />

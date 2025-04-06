@@ -53,4 +53,5 @@ public class EfContext: IdentityDbContext<User, Role, Guid>, IDbContext
     public DbSet<Message> Messages { get; set; }
     
     public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<Product> Products { get; set; }
 }

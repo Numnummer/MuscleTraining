@@ -1,8 +1,11 @@
 using System.Reflection;
+using Itis.MyTrainings.Api.Core.Abstractions;
 using Itis.MyTrainings.Api.Web.AutoMapperProfiles;
 using Itis.MyTrainings.Api.Web.Extensions;
+using Itis.MyTrainings.Api.Web.Services;
 using Itis.MyTrainings.Api.Web.SignalR;
 using Itis.MyTrainings.Api.Web.SignalR.Filters;
+using Itis.MyTrainings.PaymentService.Web.Protos;
 using MassTransit;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.SignalR;
@@ -40,6 +43,12 @@ builder.Services.AddMassTransit(x =>
 });
 builder.Services.AddMassTransitHostedService();
 builder.Services.AddCors();
+builder.Services.AddGrpc();
+builder.Services.AddGrpcClient<Transaction.TransactionClient>(o =>
+{
+    o.Address = new Uri("http://localhost:5101");
+});
+builder.Services.AddScoped<ITransactionClient, TransactionClient>();
 
 var app = builder.Build();
 
