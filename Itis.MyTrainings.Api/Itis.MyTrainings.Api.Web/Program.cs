@@ -49,6 +49,7 @@ builder.Services.AddGrpcClient<Transaction.TransactionClient>(o =>
     o.Address = new Uri("http://localhost:5101");
 });
 builder.Services.AddScoped<ITransactionClient, TransactionClient>();
+builder.Services.AddSingleton<IDictionary<Guid, Guid>>(new Dictionary<Guid, Guid>());
 
 var app = builder.Build();
 

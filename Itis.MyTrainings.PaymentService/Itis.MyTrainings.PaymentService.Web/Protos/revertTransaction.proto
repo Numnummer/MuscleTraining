@@ -13,5 +13,5 @@ message RevertTransactionRequest{
 }
 
 message RevertTransactionResponse{
-  string error = 1;           // Ошибка
+  bool success = 1;           
 }

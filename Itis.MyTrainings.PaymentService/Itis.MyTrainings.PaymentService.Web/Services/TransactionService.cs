@@ -39,8 +39,8 @@ public class TransactionService(ITransactionRepository repository,
             return new TransactionResponse()
             {
                 TransactionId = transaction.Id.ToString(),
-                Error = result.Error,
-                Success = false
+                Error = e.Message,
+                Success = result.Success
             };
         }
         

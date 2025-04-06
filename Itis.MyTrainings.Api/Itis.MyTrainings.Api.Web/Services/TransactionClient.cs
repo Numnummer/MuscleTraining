@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Itis.MyTrainings.Api.Web.Services;
 
 public class TransactionClient(Transaction.TransactionClient client,
-    EfContext dbContext):ITransactionClient
+    EfContext dbContext, IDictionary<Guid,Guid> operationsDictionary):ITransactionClient
 {
     public async Task<string> ExecuteTransactionAsync(BuyProductCommand command)
     {
@@ -17,16 +17,29 @@ public class TransactionClient(Transaction.TransactionClient client,
             return "Product not found";
         }
 
+        if (product.Remains == 0)
+        {
+            return "There is no remaining product";
+        }
+        var operationId=Guid.NewGuid();
+        operationsDictionary.Add(operationId,product.Id);
+        
         var transactionRequest = new TransactionRequest()
         {
             Amount = product.Price,
             Iteration = 1,
             Remaining = (int)product.Remains,
             UserId = command.UserId.ToString(),
-            OperationId = Guid.NewGuid().ToString(),
+            OperationId = operationId.ToString(),
             ProductId = product.Id.ToString(),
         };
+
+        product.Remains--;
+        dbContext.Products.Update(product);
+        await dbContext.SaveChangesAsync();
+        
         var result=await client.ExecuteTransactionAsync(transactionRequest);
+        operationsDictionary.Remove(operationId);
         return result.Success ? "Commit" : result.Error;
     }
 }
