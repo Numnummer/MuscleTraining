@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package TransactionService;
+
+option csharp_namespace = "Itis.MyTrainings.PaymentService.Web.Protos";
+
+service Transaction {
+  rpc ExecuteTransaction (TransactionRequest) returns (TransactionResponse);  
+}
+
+message TransactionRequest {
+  string operation_id = 1;    // UUID операции
+  uint32 amount = 2;          // Сумма транзакции
+  int32 iteration = 3;        // Итерация
+  int32 remaining = 4;        // Остаток
+  string product_id = 5;      // ID товара
+  string user_id = 6;         // ID пользователя
+}
+
+message TransactionResponse {
+  bool success = 1;             // Успешность операции
+  string transaction_id = 2;    // ID транзакции (если успешно)
+  string error = 3;             // Ошибка
+}
