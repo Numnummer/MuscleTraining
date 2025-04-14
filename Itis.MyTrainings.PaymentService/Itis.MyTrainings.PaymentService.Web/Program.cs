@@ -1,6 +1,7 @@
 using Itis.MyTrainings.PaymentService.Core.Abstractions;
 using Itis.MyTrainings.PaymentService.DataAccess;
 using Itis.MyTrainings.PaymentService.DataAccess.Repository;
+using Itis.MyTrainings.PaymentService.Web.Extentions;
 using Itis.MyTrainings.PaymentService.Web.Protos;
 using Itis.MyTrainings.PaymentService.Web.Services;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddGrpc();
 
 var app = builder.Build();
+
+await app.MigrateDbAsync();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<TransactionService>();

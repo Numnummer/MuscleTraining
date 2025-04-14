@@ -120,6 +120,42 @@ namespace Itis.MyTrainings.Api.PostgreSql.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_in(md5(random()::text || clock_timestamp()::text)::cstring)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Remains")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ee1f1a13-7f38-46f6-ac3d-4ecf38a4d79a"),
+                            Description = "asd",
+                            Name = "asd",
+                            Price = 10L,
+                            Remains = 20L
+                        });
+                });
+
             modelBuilder.Entity("Itis.MyTrainings.Api.Core.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")

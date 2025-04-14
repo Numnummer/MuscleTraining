@@ -1,1 +1,1 @@
-﻿dotnet ef migrations -p ./Itis.MyTrainings.Api.PostgreSql/ -s ./Itis.MyTrainings.Api.Web/ add {Name}  
+﻿dotnet ef migrations -p ./Itis.MyTrainings.Api.PostgreSql/ -s ./Itis.MyTrainings.Api.Web/ add addProducts  

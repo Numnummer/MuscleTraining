@@ -19,6 +19,11 @@ public class PaymentController : BaseController
     [Policy(PolicyConstants.IsDefaultUser)]
     [HttpPost("processPayment")]
     public async Task<string> ProcessPayment([FromServices] IMediator mediator,
-        [FromBody] string productName)
-    => await mediator.Send(new BuyProductCommand { ProductName = productName, UserId = CurrentUserId});
+        [FromBody] ProcessPaymentRequest request)
+    => await mediator.Send(new BuyProductCommand { ProductName = request.ProductName, UserId = CurrentUserId});
+}
+
+public class ProcessPaymentRequest
+{
+    public string ProductName { get; set; }
 }
