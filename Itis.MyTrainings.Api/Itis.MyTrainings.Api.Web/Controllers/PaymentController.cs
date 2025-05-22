@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Itis.MyTrainings.Api.Web.Controllers;
 
+/// <summary>
+/// 
+/// </summary>
 [Authorize]
 public class PaymentController : BaseController
 {

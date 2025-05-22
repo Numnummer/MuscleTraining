@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itis.MyTrainings.MobileApi", "Itis.MyTrainings.MobileApi\Itis.MyTrainings.MobileApi.csproj", "{DFAA4FAC-6573-4288-B800-907B7FCAEB09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFAA4FAC-6573-4288-B800-907B7FCAEB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFAA4FAC-6573-4288-B800-907B7FCAEB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFAA4FAC-6573-4288-B800-907B7FCAEB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFAA4FAC-6573-4288-B800-907B7FCAEB09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
