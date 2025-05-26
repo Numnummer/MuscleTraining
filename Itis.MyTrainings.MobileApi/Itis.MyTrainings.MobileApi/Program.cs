@@ -1,3 +1,4 @@
+using System.Collections;
 using Itis.MyTrainings.MobileApi.Mutations;
 using Itis.MyTrainings.MobileApi.Queries;
 
@@ -14,9 +15,15 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader();
         });
 });
+
+builder.Services.AddScoped<ExerciseQuery>();
+builder.Services.AddScoped<AuthQuery>();
+builder.Services.AddScoped<AuthMutations>();
+builder.Services.AddScoped<ExerciseMutations>();
+
 builder.Services.AddGraphQLServer()
-    .AddQueryType<AuthQuery>()
-    .AddMutationType<AuthMutations>();
+    .AddQueryType<Query>()
+    .AddMutationType<Mutations>();
 var app = builder.Build();
 app.UseCors("AllowAll");
 
