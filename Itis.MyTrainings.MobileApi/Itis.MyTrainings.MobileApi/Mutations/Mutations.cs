@@ -46,5 +46,20 @@ public class Mutations:ObjectType
                 await exerciseMutations.AddExercise(jwtToken, name, description);
                 return true;
             });
+        
+        descriptor.Field("DeleteExercise")
+            .Argument("jwtToken", a => a.Type<NonNullType<StringType>>())
+            .Argument("id", a => a.Type<NonNullType<StringType>>())
+            .Type<BooleanType>()
+            .Resolve(async context =>
+            {
+                var exerciseMutations = context.Service<ExerciseMutations>();
+
+                var jwtToken = context.ArgumentValue<string>("jwtToken");
+                var id = context.ArgumentValue<string>("id");
+
+                await exerciseMutations.DeleteExercise(jwtToken, id);
+                return true;
+            });
     }
 }

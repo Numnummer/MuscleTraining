@@ -18,4 +18,13 @@ public class ExerciseMutations(IHttpClientFactory httpClientFactory):ObjectType
         var response = await client.PostAsJsonAsync("api/exercises", request);
         response.EnsureSuccessStatusCode();
     }
+    
+    public async Task DeleteExercise(string jwtToken, string id)
+    {
+        var client = httpClientFactory.CreateClient("ApiClient");
+        client.DefaultRequestHeaders.Authorization = 
+            new AuthenticationHeaderValue("Bearer", jwtToken);
+        var response = await client.DeleteAsync($"api/exercises/{id}");
+        response.EnsureSuccessStatusCode();
+    }
 }
