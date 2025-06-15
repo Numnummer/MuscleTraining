@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "YourNamespace.Grpc";
+
+service Messaging {
+  rpc SendMulticastMessage (MulticastMessageRequest) returns (MessageResponse);
+  rpc SendUnicastMessage (UnicastMessageRequest) returns (MessageResponse);
+}
+
+message MulticastMessageRequest {
+  string author = 1;
+  string message_text = 2;
+  string destination = 3;
+  string role = 4;
+  repeated string file_names = 5;
+  repeated bytes files_content_base64 = 6;
+  repeated string files_metadata = 7;
+}
+
+message UnicastMessageRequest {
+  string author = 1;
+  string message_text = 2;
+  string destination = 3;
+  repeated string file_names = 4;
+  repeated bytes files_content = 5;
+  repeated string files_metadata = 6;
+}
+
+message MessageResponse {
+  bool success = 1;
+  string message = 2;
+}
